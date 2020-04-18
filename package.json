@@ -1,0 +1,30 @@
+{
+  "name": "getthingsdone",
+  "version": "1.0.0",
+  "description": "Portable version of the linux app Get Things GNOME!, by jknight",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "postinstall": "install-app-deps"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sengaigibon/get-things-done-electron-two.git"
+  },
+  "keywords": [
+    "timetracking",
+    "time"
+  ],
+  "author": "Javier Caballero (jknight)",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^8.2.3",
+    "electron-builder": "^21.2.0"
+  },
+  "dependencies": {
+    "jquery": "^3.4.1",
+    "jsdom": "^15.1.1",
+    "sqlite3": "^4.0.9"
+  }
+}

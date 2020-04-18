@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'" /> -->
+
+    <title>Get Things Done!</title>
+
+    <link rel="stylesheet" href="./styles.css"> 
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-balham.css">
+    <!-- <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.noStyle.js"> -->
+    <script src="./lib/ag-grid-community.min.js"></script>
+    <script src="https://kit.fontawesome.com/7da05a9d86.js"></script> 
+    <script> window.$ = window.jQuery = require("jquery"); </script>
+  </head>
+  <body>
+    <div class="topToolbox">
+        <ul>
+          <li style="width: 130px">
+            <a id="btnNewTask" href="#">
+              <i class="fas fa-tasks"></i>
+              <span>New Task</span>
+            </a>
+          </li>
+          <li style="width: 150px">
+            <a id="btnTaskDone" href="#">
+              <i class="fas fa-clipboard-check"></i>
+              <span>Mark as Done</span>
+            </a>
+          </li>
+          <li style="width: 110px">
+            <a id="btnDeleteTask" href="#">
+              <i class="fas fa-trash-alt"></i>
+              <span>Delete</span>
+            </a>
+          </li>
+          <li style="width: 70px">
+            <a id="btnStartStop" style="width: 100%; padding: 6px 0px;" href="#">
+              <i class="fas fa-play-circle" id="btnStartStopIcon"></i>
+            </a>
+          </li>
+          <li style="width: 110px">
+            <a id="btnReports" href="#">
+              <i class="fas fa-clipboard-list"></i>
+              <span>Reports</span>
+            </a>
+          </li>
+        </ul>
+    </div>
+    
+    <div class="tasksFields margin-10px">
+      <ul>
+        <li><input type="text" id="inputTag" class="tag" placeholder="Tag"></li>
+        <li>
+          <input type="text" id="inputName" class="taskName" placeholder="Task">
+        </li>
+      </ul>
+    </div>
+
+    <div id="gridTasks" class="ag-theme-balham tasksTable margin-10px"></div>
+
+    <!-- You can also require other files to run in this process -->
+    <script src="./renderer.js"></script>
+    <script src="./functions.js"></script>
+  </body>
+</html>
