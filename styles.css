@@ -33,7 +33,8 @@ body {
   }
 
   .topToolbox a {
-    width: 92%;
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
     float: left; 
     text-align: center; 
     padding: 5px 5px; 

@@ -1,12 +1,10 @@
-const { sqlite3 } = require('sqlite3');
+const _SQLITE3 = require('sqlite3').verbose();
 
-const _dbDir = 'db'
-const _dbName = 'get_things_done.sqlite'
-const _dbPath = _dbDir + '/' + _dbName;
+const DB_DIR = 'db'
+const DB_NAME = 'get_things_done.sqlite'
+const DB_PATH = DB_DIR + '/' + DB_NAME;
 
-var _sqlite3;
-
-const tableTasks = "create table tasks (" + 
+const TABLE_TASKS = "CREATE TABLE tasks (" + 
     "taskId INTEGER PRIMARY KEY AUTOINCREMENT," +
     "tag VARCHAR(32) DEFAULT ''," +
     "title VARCHAR(254) NOT NULL," +
@@ -16,7 +14,7 @@ const tableTasks = "create table tasks (" +
     "totalTime TIME DEFAULT 0" +
     ")";
 
-const tableTaskTracker =  "create table taskTracker (" +
+const TABLE_TASK_TRACKER =  "CREATE TABLE taskTracker (" +
     "trackId INTEGER PRIMARY KEY AUTOINCREMENT," +
     "taskId INT NOT NULL," +
     "start DATETIME NOT NULL," +
@@ -25,7 +23,7 @@ const tableTaskTracker =  "create table taskTracker (" +
     "FOREIGN KEY (taskId) REFERENCES tasks(taskId)" +
     ")";
 
-const tableTaskHistory = "create table taskHistory (" +
+const TABLE_TASK_HISTORY = "CREATE TABLE taskHistory (" +
     "taskId INTEGER PRIMARY KEY AUTOINCREMENT," +
     "tag VARCHAR(32) DEFAULT NULL," +
     "title VARCHAR(254) NOT NULL," +
@@ -35,37 +33,111 @@ const tableTaskHistory = "create table taskHistory (" +
     "totalTime TIME DEFAULT 0" +
     ")";
 
-const viewSummary = "CREATE VIEW summary as select t.title, sum(tt.total) from tasks t join taskTracker tt on tt.taskId = t.taskId group by t.title";
+const VIEW_SUMMARY = "CREATE VIEW summary as select t.title, sum(tt.total) FROM tasks t JOIN taskTracker tt ON tt.taskId = t.taskId GROUP BY t.title";
 
-const viewSummaryTwo = "CREATE VIEW summary2 as select t.title as title, sum(tt.total) as total from tasks t join taskTracker tt on tt.taskId = t.taskId group by t.title";
+const VIEW_SUMMARY_TWO = "CREATE VIEW summary2 as select t.title as title, sum(tt.total) as total FROM tasks t JOIN taskTracker tt ON tt.taskId = t.taskId GROUP BY t.title";
 
+/**** General queries */
+const SELECT_ALL_INCOMPLETE = "SELECT * from tasks WHERE status != 'completed' ORDER BY taskId DESC";
+const inserNew = "";
+
+/**** End general queries */
+
+let _db = null;
+
+/**
+ * Create DB schema
+ */
 function createDB () 
 {
-    let db = new _sqlite3.Database(_dbPath);
+    let db = this.getDB();
 
     console.log("Creating DB schema...");
     db.serialize(function() {
-        db.run(tableTasks);
-        db.run(tableTaskTracker);
-        db.run(tableTaskHistory);
-        db.run(viewSummary);
-        db.run(viewSummaryTwo);
+        db.run(TABLE_TASKS);
+        db.run(TABLE_TASK_TRACKER);
+        db.run(TABLE_TASK_HISTORY);
+        db.run(VIEW_SUMMARY);
+        db.run(VIEW_SUMMARY_TWO);
     });
     console.log("DB schema creation OK");
 
     db.close();
 }
 
+/**
+ * @param {Date} initial 
+ */
+function getCurrentDate(initial)
+{
+    var today = initial ? initial : new Date();
+    var date = today.getFullYear() + '-' + (today.getMonth()+1) + '-' + today.getDate() + ' ' + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+    return date;
+}
+
+/**
+ * Exectute sql scripts
+ * 
+ * @param {string} sql 
+ * @param {object} context 
+ * @param {function} callback 
+ */
+function run(sql, context, callback)
+{
+    let db = context.getDB();
+
+    db.run(sql, [], callback);
+}
+
+exports.getSQL = function() {
+    return _SQLITE3;
+};
+
+exports.getDB = function(){
+    if (!_db) {
+        _db = new _SQLITE3.Database(DB_PATH);
+    }
+    return _db;
+};
+
+/**
+ * Initialize DB location and schema
+ */
 exports.initDb = function() {
-    _sqlite3 = require('sqlite3').verbose();
     var fs = require('fs');
     
-    if (!fs.existsSync(_dbDir)) {
-      fs.mkdirSync(_dbDir);
+    if (!fs.existsSync(DB_DIR)) {
+      fs.mkdirSync(DB_DIR);
     }
 
-    if (!fs.existsSync(_dbPath)) {
+    if (!fs.existsSync(DB_PATH)) {
       createDB();
     } 
 };
 
+exports.getAllRows = function(callback) {
+    let db = this.getDB();
+
+    db.all(SELECT_ALL_INCOMPLETE, [], callback);
+};
+
+exports.insertNew = function (taskTag, taskName, callback) {
+    let sql = "INSERT INTO tasks(taskId, tag, title, startDate) VALUES (null, '" + taskTag + "', '" + taskName + "', '" + getCurrentDate() + "')";
+
+    run(sql, this, callback);
+};
+
+exports.complete = function (taskId, callback) {
+    let sql = "UPDATE tasks SET status = 'completed' where taskId = '" + taskId + "'";
+
+    run(sql, this, callback);
+};
+
+exports.startTracking = function (taskId, callback) {
+    let sql = "insert into taskTracker(trackId, taskId, start) values(null, " + taskId + ", " + getCurrentDate() + ")";
+
+    run(sql, this, callback);
+};
+
+exports.stopTracking = function (taskId, callback) {};
