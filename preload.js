@@ -9,7 +9,7 @@ function initializeTable()
     if (err) {
       throw err;
     }
-    
+
     var columnDefs = [
       {headerName: "Id", field: "id", checkboxSelection: true, width: 75, sortable: true},
       {headerName: "Tag", field: "tag", width: 80, resizable: true},
@@ -22,7 +22,7 @@ function initializeTable()
     rows.forEach((row) => {
       data.push({id: row.taskId, tag: row.tag, title:row.title, startDate:row.startDate, status:row.status})
     });
-  
+
     gridOptions = {
       columnDefs: columnDefs,
       rowData: data,
@@ -30,12 +30,21 @@ function initializeTable()
       rowHeight: 30,
 
       onGridReady: function(event) { console.log('The grid is now ready'); },
-      onRowSelected: function (event) { 
+      onRowSelected: function (event) {
         var selection = gridOptions.api.getSelectedRows();
-        window.rowSelected = selection.length ? selection[0].id : null; 
+        window.rowSelectedId = selection.length ? selection[0].id : null; 
+        window.rowSelectedStatus = selection.length ? selection[0].status : null;
+
+        if (window.rowSelectedStatus == 'idle') {
+          $('#btnStartStopIcon').removeClass('fa-stop-circle');
+          $('#btnStartStopIcon').addClass('fa-play-circle');
+        } else if (window.rowSelectedStatus == 'active') {
+          $('#btnStartStopIcon').removeClass('fa-play-circle');
+          $('#btnStartStopIcon').addClass('fa-stop-circle');
+        }
       }
     };
-  
+
     var gridDiv = document.querySelector('#gridTasks');
     new agGrid.Grid(gridDiv, gridOptions);
   });
@@ -53,5 +62,5 @@ window.addEventListener('DOMContentLoaded', () => {
   //   replaceText(`${type}-version`, process.versions[type])
   // }
   initializeTable();
-  
+
 })

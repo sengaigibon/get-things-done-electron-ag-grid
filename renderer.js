@@ -38,7 +38,7 @@ function updateGrid(schema) {
         if (err) {
           throw err;
         }
-      
+
         var data = [];
         rows.forEach((row) => {
             data.push({id: row.taskId, tag: row.tag, title:row.title, startDate:row.startDate, status:row.status})
@@ -48,8 +48,7 @@ function updateGrid(schema) {
     });
 }
 
-function createTask()
-{
+function createTask() {
     var taskTag = $('#inputTag').val();
     var taskName = $('#inputName').val();
 
@@ -73,22 +72,22 @@ function createTask()
             console.log(err.message);
             return false;
         }
-        
+
         console.log(`A row has been inserted with rowid ${this.lastID}`);
 
-        updateGrid(schema);        
+        updateGrid(schema);
     });
-    
+
     $('#inputTag').val('');
     $('#inputName').val('');
 }
 
 function completeTask() {
-    if (!window.rowSelected) {
+    if (!window.rowSelectedId) {
         dialog.showMessageBox({
             buttons: ["OK"],
             type: "error",
-            title: "Notask selected",
+            title: "No task selected",
             message: "First select a task."
         });
         return;
@@ -96,78 +95,92 @@ function completeTask() {
     //todo: check if task is running
 
     var schema = require('./schema');
-    schema.complete(window.rowSelected, function(err) {
+    schema.updateStatus(window.rowSelectedId, schema.statusCompleted, function(err) {
         if (err) {
             console.log(err.message);
             return false;
         }
-        
-        console.log('Task completed');
+
+        console.log('Task ID ' + window.rowSelectedId + ' completed');
 
         updateGrid(schema);
     });
 
 }
 
-// function startStopTask()
-// {
-//     let sql;
-//     let currentSelectedTaskId = $("#tasksTable tr.selected td:first").html();
+function startStopTask() {
 
-//     if (!status) {
-//         dialog.showMessageBox({
-//             buttons: ["OK"],
-//             type: "warning",
-//             message: "Reminder: Please select a task."
-//         });
-//         return;
-//     }
+    if (!checkTask()) return;
 
-//     let status = $("#tasksTable tr.selected .statusFixedWidth").html();
+    var schema = require('./schema');
 
-//     switch (status) {
-//         case 'idle':
-//             sql = "insert into taskTracker(trackId, taskId, start) values(null, " + currentSelectedTaskId + ", " + getCurrentDate() + ")";
+    switch (window.rowSelectedStatus) {
+        case 'idle':
+            schema.startTracking(window.rowSelectedId, function(err) {
+                if (err) {
+                    console.log(err.message);
+                    return false;
+                }
+
+                schema.updateStatus(window.rowSelectedId, schema.statusActive, function(err) {
+                    if (err) {
+                        console.log(err.message);
+                        return false;
+                    }
+
+                    console.log('Task ID ' + window.rowSelectedId + ' started');
             
-//             if (runThis(sql)) {
-//                 fillTable();
-//             }
+                    updateGrid(schema);
+                });
+            });
 
-//             break;
+            break;
 
-//         case 'active':
-//             sql = "select start from taskTracker where taskId = " + currentSelectedTaskId;
+        case 'active':
+            schema.stopTracking(window.rowSelectedId, function(err) {
+                if (err) {
+                    console.log(err.message);
+                    return false;
+                }
 
-//             db.get(sql, [], (err, start) => {
-//                 if (err) {
-//                     return console.error(err.message);
-//                 }
-                
-//                 var startDate = new Date(start).getTime();
-//                 var currentDate = new Date().getTime();
-//                 var totalTime = currentDate - startDate;
-                
+                schema.updateStatus(window.rowSelectedId, schema.statusIdle, function(err) {
+                    if (err) {
+                        console.log(err.message);
+                        return false;
+                    }
 
+                    console.log('Task ID ' + window.rowSelectedId + ' is idle');
+            
+                    updateGrid(schema);
+                });
+            });            
 
-//             });
+            break;
+    }
 
-//             sql = "insert into taskTracker(trackId, taskId, start) values(null, " + currentSelectedTaskId + ", " + getCurrentDate() + ")";
-        
-//             if (runThis(sql)) {
-//                 fillTable();
-//             }
-//             break;
-//     }
+    if ($('#btnStartStopIcon').hasClass('fa-play-circle')) {
+        $('#btnStartStopIcon').removeClass('fa-play-circle');
+        $('#btnStartStopIcon').addClass('fa-stop-circle');
+    } else if ($('#btnStartStopIcon').hasClass('fa-stop-circle')) {
+        $('#btnStartStopIcon').removeClass('fa-stop-circle');
+        $('#btnStartStopIcon').addClass('fa-play-circle');
+    }
+}
 
-//     console.log(status);
+function checkTask() {
+    if (!window.rowSelectedId) {
+        dialog.showMessageBox({
+            buttons: ["OK"],
+            type: "error",
+            title: "No task selected",
+            message: "First select a task."
+        });
+        return false;
+    }
 
-//     if ($('#btnStartStopIcon').hasClass('fa-play-circle')) {
-//         $('#btnStartStopIcon').removeClass('fa-play-circle');
-//         $('#btnStartStopIcon').addClass('fa-stop-circle');
-//     } else if ($('#btnStartStopIcon').hasClass('fa-stop-circle')) {
-//         $('#btnStartStopIcon').removeClass('fa-stop-circle');
-//         $('#btnStartStopIcon').addClass('fa-play-circle');
-//     }
+    return true;
+}
 
+function afterDbActivity(err) {
 
-// }
+}

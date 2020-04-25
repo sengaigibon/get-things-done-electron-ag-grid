@@ -4,7 +4,7 @@ const DB_DIR = 'db'
 const DB_NAME = 'get_things_done.sqlite'
 const DB_PATH = DB_DIR + '/' + DB_NAME;
 
-const TABLE_TASKS = "CREATE TABLE tasks (" + 
+const TABLE_TASKS = "CREATE TABLE tasks (" +
     "taskId INTEGER PRIMARY KEY AUTOINCREMENT," +
     "tag VARCHAR(32) DEFAULT ''," +
     "title VARCHAR(254) NOT NULL," +
@@ -48,7 +48,7 @@ let _db = null;
 /**
  * Create DB schema
  */
-function createDB () 
+function createDB ()
 {
     let db = this.getDB();
 
@@ -66,9 +66,9 @@ function createDB ()
 }
 
 /**
- * @param {Date} initial 
+ * @param {Date} initial
  */
-function getCurrentDate(initial)
+function getDateFormatted(initial)
 {
     var today = initial ? initial : new Date();
     var date = today.getFullYear() + '-' + (today.getMonth()+1) + '-' + today.getDate() + ' ' + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
@@ -78,10 +78,10 @@ function getCurrentDate(initial)
 
 /**
  * Exectute sql scripts
- * 
- * @param {string} sql 
- * @param {object} context 
- * @param {function} callback 
+ *
+ * @param {string} sql
+ * @param {object} context
+ * @param {function} callback
  */
 function run(sql, context, callback)
 {
@@ -90,10 +90,19 @@ function run(sql, context, callback)
     db.run(sql, [], callback);
 }
 
+
+
+exports.statusIdle = 'idle';
+exports.statusActive = 'active';
+exports.statusCompleted = 'completed';
+
 exports.getSQL = function() {
     return _SQLITE3;
 };
 
+/**
+ * @returns {sqlite3.Database}  
+ */
 exports.getDB = function(){
     if (!_db) {
         _db = new _SQLITE3.Database(DB_PATH);
@@ -106,14 +115,14 @@ exports.getDB = function(){
  */
 exports.initDb = function() {
     var fs = require('fs');
-    
+
     if (!fs.existsSync(DB_DIR)) {
       fs.mkdirSync(DB_DIR);
     }
 
     if (!fs.existsSync(DB_PATH)) {
       createDB();
-    } 
+    }
 };
 
 exports.getAllRows = function(callback) {
@@ -123,21 +132,39 @@ exports.getAllRows = function(callback) {
 };
 
 exports.insertNew = function (taskTag, taskName, callback) {
-    let sql = "INSERT INTO tasks(taskId, tag, title, startDate) VALUES (null, '" + taskTag + "', '" + taskName + "', '" + getCurrentDate() + "')";
+    let sql = "INSERT INTO tasks(taskId, tag, title, startDate) VALUES (null, '" + taskTag + "', '" + taskName + "', '" + getDateFormatted() + "')";
 
     run(sql, this, callback);
 };
 
-exports.complete = function (taskId, callback) {
-    let sql = "UPDATE tasks SET status = 'completed' where taskId = '" + taskId + "'";
+exports.updateStatus = function (taskId, status, callback) {
+    let sql = "UPDATE tasks SET status = '" + status + "' WHERE taskId = '" + taskId + "'";
 
     run(sql, this, callback);
 };
 
 exports.startTracking = function (taskId, callback) {
-    let sql = "insert into taskTracker(trackId, taskId, start) values(null, " + taskId + ", " + getCurrentDate() + ")";
+    let sql = "INSERT INTO taskTracker(trackId, taskId, start) VALUES(null, " + taskId + ", '" + getDateFormatted() + "')";
 
     run(sql, this, callback);
 };
 
-exports.stopTracking = function (taskId, callback) {};
+exports.stopTracking = function (taskId, callback) {
+    let sql = "SELECT start FROM taskTracker WHERE taskId = '" + taskId + "' order by trackId desc limit 1";
+
+    let db = this.getDB();
+    db.get(sql, [], function(err, row) {
+        if (err) {
+            console.log(err.message);
+            return false;
+        }
+
+        var start = new Date(row.start);
+        var stop = new Date();
+        var total = Math.floor((stop.getTime() - start.getTime()) / 1000); //difference in secods
+
+        let sql = "UPDATE taskTracker SET stop = '" + getDateFormatted(stop) +"', total = " + total + " WHERE taskId = '" + taskId + "'";
+
+        db.run(sql, [], callback);
+    });
+};
