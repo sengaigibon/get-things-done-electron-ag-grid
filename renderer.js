@@ -29,7 +29,8 @@ function setToolBoxEvents()
     });
 
     $('#btnReports').click(function(e) {
-        reporting();
+        // reporting();
+        createBrowserWindow();
     });
 }
 
@@ -166,6 +167,23 @@ function startStopTask() {
         $('#btnStartStopIcon').addClass('fa-play-circle');
     }
 }
+
+function createBrowserWindow() {
+    const remote = require('electron').remote;
+    const BrowserWindow = remote.BrowserWindow;
+    const win = new BrowserWindow({
+        height: 600,
+        width: 800,
+        webPreferences: {
+            preload: './preloadReports.js',
+            nodeIntegration: true
+        }
+    });
+
+    win.loadFile('reports.html');
+    win.webContents.openDevTools();
+    win.focus();
+  }
 
 function checkTask() {
     if (!window.rowSelectedId) {

@@ -1,0 +1,58 @@
+@font-face {
+    font-family: 'titillium_webregular';
+    src: url('./resources/fonts/titilliumweb-regular-webfont.woff2') format('woff2'),
+         url('./resources/fonts/titilliumweb-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+body {
+  background-color: gainsboro;
+  font-family: 'titillium_webregular';
+}
+
+.filters {
+  width: 100%;
+  height: 40px;
+  border-bottom-color: deepskyblue;
+  border-bottom-style: groove;
+  background-color: aliceblue;
+}
+.filters .preselected {
+  width: 35%;
+  display: inline-block;
+  vertical-align: -webkit-baseline-middle;
+}
+
+.filters .dates, .date-start,.date-end,.date-action {
+  display: inline-block;
+  vertical-align: -webkit-baseline-middle;
+}
+
+.totals {
+  margin-top: 10px;
+  float: right;
+}
+
+.totals .texts,.hours {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.tasksTable {
+  height: 485px;
+  width: 100%;
+  margin-top: 12px;
+}
+
+.margin-20px {
+  margin-left: 20px; 
+}
+
+.align-bottom {
+  vertical-align: bottom;
+}
+
+.inline-block {
+  display: inline-block;
+}

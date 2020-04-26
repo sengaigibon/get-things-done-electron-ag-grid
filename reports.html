@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Reports</title>
+
+        <link rel="stylesheet" href="./stylesReports.css"> 
+        <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
+        <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-balham.css">
+        <!-- <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.noStyle.js"> -->
+        <script src="./lib/ag-grid-community.min.js"></script>
+    </head>
+    <body>
+        <div class="filters">
+            <div class="preselected">
+                <div class="margin-20px">
+                    <div class="inline-block">
+                        <select name="preselection" id="preselect">
+                            <option value="today">Today</option>
+                            <option value="yesteday">Yesterday</option>
+                        </select>
+                        <button id="btnSearchPresel">Search</button>
+                    </div>
+                </div>
+            </div>
+            <div class="dates">
+                <div class="date-start">
+                    <label for="date-start">Start date:</label>
+                    <input class="align-bottom" type="date" id="dateStart" name="date-start">
+                </div>
+                <div class="date-end">
+                    <label for="date-end">End date:</label>
+                    <input class="align-bottom" type="date" id="dateEnd" name="date-end">
+                </div>
+                <div class="date-action">
+                    <button id="btnSearchCustom">Search</button>
+                </div>
+            </div>
+            <div id="gridTasks" class="ag-theme-balham tasksTable margin-10px"></div>
+            <div class="totals">
+                <div class="texts">
+                    <span>Total hours:</span>
+                </div>
+                <div class="hours">
+                    <span id="hours">0.0000</span>
+                </div>
+            </div>
+        </div>
+        <script src="./rendererReports.js"></script>
+    </body>
+</html>
