@@ -1,5 +1,6 @@
 window.gridOptions;
-window.rowSelected = null;
+window.rowSelectedId = null;
+window.rowSelectedStatus = null;
 
 function initializeTable()
 {

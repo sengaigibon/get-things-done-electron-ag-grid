@@ -20,6 +20,7 @@ function createWindow () {
   mainWindow.webContents.openDevTools()
 
   mainWindow.focus();
+  window.mainWindow = mainWindow;
 } 
 
 function initialize () 

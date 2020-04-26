@@ -40,10 +40,16 @@ const VIEW_SUMMARY_TWO = "CREATE VIEW summary2 as select t.title as title, sum(t
 
 /**** General queries */
 const SELECT_ALL_INCOMPLETE = "SELECT * from tasks WHERE status != 'completed' ORDER BY taskId DESC";
-const SELECT_TODAYS_TASKS = "SELECT t.title as title, sum(tt.total) as total " + 
+const SELECT_TODAYS_TASKS = "SELECT t.taskId as id, t.title as title, t.status as status, sum(tt.total) as total " + 
                             "FROM tasks t JOIN taskTracker tt ON tt.taskId = t.taskId " + 
                             "WHERE tt.start > date() " + 
                             "GROUP BY t.taskId";
+
+const SELECT_TASKS_CUSTOM = "SELECT t.taskId as id, t.title as title, t.status as status, sum(tt.total) as total " + 
+                            "FROM tasks t JOIN taskTracker tt ON tt.taskId = t.taskId " + 
+                            "WHERE tt.start > ? and tt.start < ?" + 
+                            "GROUP BY t.taskId";
+
 
 /**** End general queries */
 
@@ -73,9 +79,9 @@ function createDB ()
  * 
  * @param {*} initial 
  */
-function getDateFormatted(initial = null)
+function getDateFormatted(initial = null, format = "yyyy-mm-dd HH:MM:ss")
 {
-    return _DATE_FORMAT(initial ? initial : new Date(), "yyyy-mm-dd HH:MM:ss");
+    return _DATE_FORMAT(initial ? initial : new Date(), format);
 }
 
 /**
@@ -146,7 +152,7 @@ exports.updateStatus = function (taskId, status, callback) {
 };
 
 exports.startTracking = function (taskId, callback) {
-    let sql = "INSERT INTO taskTracker(trackId, taskId, start) VALUES(null, " + taskId + ", datetime('now'))";
+    let sql = "INSERT INTO taskTracker(trackId, taskId, start) VALUES(null, " + taskId + ", '" + getDateFormatted() + "')";
 
     run(sql, this, callback);
 };
@@ -171,13 +177,27 @@ exports.stopTracking = function (taskId, callback) {
     });
 };
 
-exports.getTasksByDate = function (period = 'today', startDate = null, stopDate = null, callback) {
+exports.getTasksByDate = function (preset = 'today', startDate = null, stopDate = null, callback) {
     let db = this.getDB();
 
     var query;
-    if (period == 'today') {
-        query = SELECT_TODAYS_TASKS;
+    var params = [];
+
+    switch (preset) {
+        case 'yesterday':
+            query = SELECT_TASKS_CUSTOM;
+            params = [startDate, stopDate];
+            break;
+
+        case 'custom':
+            query = SELECT_TASKS_CUSTOM;
+            params = [startDate, stopDate];
+            break;
+        default:
+        case 'today':
+            query = SELECT_TODAYS_TASKS;
+            break;
     }
 
-    db.all(query, [], callback);
+    db.all(query, params, callback);
 }

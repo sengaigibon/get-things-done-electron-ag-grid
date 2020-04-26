@@ -14,8 +14,7 @@ $(document).ready(function(){
     setToolBoxEvents();
 });
 
-function setToolBoxEvents()
-{
+function setToolBoxEvents() {
     $('#btnNewTask').click(function(e) {
         createTask();
     });
@@ -29,8 +28,7 @@ function setToolBoxEvents()
     });
 
     $('#btnReports').click(function(e) {
-        // reporting();
-        createBrowserWindow();
+        createReportsWindow();
     });
 }
 
@@ -46,6 +44,9 @@ function updateGrid(schema) {
         });
 
         gridOptions.api.setRowData(data);
+
+        window.rowSelectedId = null;
+        window.rowSelectedStatus = null;
     });
 }
 
@@ -168,21 +169,33 @@ function startStopTask() {
     }
 }
 
-function createBrowserWindow() {
+function createReportsWindow() {
+    if (window.reportsWindow != null) {
+        window.reportsWindow.focus();
+        return;
+    }
+
     const remote = require('electron').remote;
     const BrowserWindow = remote.BrowserWindow;
-    const win = new BrowserWindow({
+    const child = new BrowserWindow({
+        show: false,
         height: 600,
         width: 800,
         webPreferences: {
-            preload: './preloadReports.js',
             nodeIntegration: true
         }
     });
 
-    win.loadFile('reports.html');
-    win.webContents.openDevTools();
-    win.focus();
+    child.loadFile('reports.html');
+    child.webContents.openDevTools();
+    child.once('ready-to-show', () => {
+        child.show(); 
+        window.reportsWindow = child;
+    });
+
+    child.once('close', () => {
+        window.reportsWindow = null;
+    });
   }
 
 function checkTask() {
@@ -197,8 +210,4 @@ function checkTask() {
     }
 
     return true;
-}
-
-function afterDbActivity(err) {
-
 }

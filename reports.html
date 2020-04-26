@@ -14,22 +14,26 @@
             <div class="preselected">
                 <div class="margin-20px">
                     <div class="inline-block">
-                        <select name="preselection" id="preselect">
+                        <select name="presets" id="presets">
                             <option value="today">Today</option>
-                            <option value="yesteday">Yesterday</option>
+                            <option value="yesterday">Yesterday</option>
+                            <option value="thisWeek">This week</option>
+                            <option value="lastWeek">Last week</option>
+                            <option value="thisMonth">This month</option>
+                            <option value="lastMonth">Last month</option>
                         </select>
-                        <button id="btnSearchPresel">Search</button>
+                        <button id="btnSearchPreset">Search</button>
                     </div>
                 </div>
             </div>
             <div class="dates">
                 <div class="date-start">
                     <label for="date-start">Start date:</label>
-                    <input class="align-bottom" type="date" id="dateStart" name="date-start">
+                    <input class="align-bottom" type="date" id="startDate" name="date-start">
                 </div>
                 <div class="date-end">
                     <label for="date-end">End date:</label>
-                    <input class="align-bottom" type="date" id="dateEnd" name="date-end">
+                    <input class="align-bottom" type="date" id="stopDate" name="date-end">
                 </div>
                 <div class="date-action">
                     <button id="btnSearchCustom">Search</button>
