@@ -1,0 +1,21 @@
+@font-face {
+    font-family: 'titillium_webregular';
+    src: url('./resources/fonts/titilliumweb-regular-webfont.woff2') format('woff2'),
+         url('./resources/fonts/titilliumweb-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+body {
+    background-color: gainsboro;
+    font-family: 'titillium_webregular';
+}
+
+.margin-10px {
+    margin-top: 10px;
+}
+
+.tasksTable {
+    height: 81vh;
+    width: 100%;
+}
