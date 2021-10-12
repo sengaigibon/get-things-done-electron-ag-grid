@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/sengaigibon/get-things-done-electron-two#readme",
   "devDependencies": {
-    "electron": "^8.2.3",
+    "electron": "^11.5.0",
     "electron-builder": "^21.2.0"
   },
   "dependencies": {
