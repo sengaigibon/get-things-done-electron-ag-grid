@@ -29,7 +29,7 @@
   "dependencies": {
     "dateformat": "^3.0.3",
     "jquery": "^3.4.1",
-    "jsdom": "^15.1.1",
+    "jsdom": "^16.5.0",
     "sqlite3": "^4.0.9"
   }
 }
