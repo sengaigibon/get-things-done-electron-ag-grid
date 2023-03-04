@@ -10,7 +10,7 @@ const $ = require('jQuery');
 /**
  * Initialize component events
  */
-$(document).ready(function(){
+$(document).ready(function() {
     setToolBoxEvents();
 });
 
