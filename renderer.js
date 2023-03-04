@@ -10,7 +10,7 @@ const $ = require('jQuery');
 /**
  * Initialize component events
  */
-$(document).ready(function(){
+$(document).ready(function() {
     setToolBoxEvents();
 });
 
@@ -85,7 +85,7 @@ function createTask() {
 }
 
 function completeTask() {
-    if (!window.rowSelectedId) {
+    if (!window.selectedRows) {
         dialog.showMessageBox({
             buttons: ["OK"],
             type: "error",
@@ -94,20 +94,23 @@ function completeTask() {
         });
         return;
     }
-    //todo: check if task is running
 
-    var schema = require('./schema');
-    schema.updateStatus(window.rowSelectedId, schema.statusCompleted, function(err) {
-        if (err) {
-            console.log(err.message);
-            return false;
+    let schema = require('./schema');
+    selectedRows.forEach(function(row) {
+        if (row.status == 'active') { //skip the task if it's active
+            return; 
         }
 
-        console.log('Task ID ' + window.rowSelectedId + ' completed');
-
-        updateGrid(schema);
+        schema.updateStatus(row.id, schema.statusCompleted, function(err) {
+            if (err) {
+                console.log(err.message);
+                return false;
+            }
+    
+            console.log('Task ID ' + row.id + ' completed');
+        });
     });
-
+    updateGrid(schema);
 }
 
 function startStopTask() {
