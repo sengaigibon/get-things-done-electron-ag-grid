@@ -1,6 +1,7 @@
 window.gridOptions;
 window.rowSelectedId = null;
 window.rowSelectedStatus = null;
+window.selectedRows = null;
 
 function initializeTable()
 {
@@ -29,13 +30,15 @@ function initializeTable()
       rowData: data,
       resizable: true,
       rowHeight: 30,
+      rowSelection: 'multiple',
 
       onGridReady: function(event) { console.log('The grid is now ready'); },
       onRowSelected: function (event) {
         var selection = gridOptions.api.getSelectedRows();
+        window.selectedRows = selection.length ? selection : null;
         window.rowSelectedId = selection.length ? selection[0].id : null; 
-        window.rowSelectedStatus = selection.length ? selection[0].status : null;
-
+        window.rowSelectedStatus = selection.length ? selection[0].status : null; 
+        
         if (window.rowSelectedStatus == 'idle') {
           $('#btnStartStopIcon').removeClass('fa-stop-circle');
           $('#btnStartStopIcon').addClass('fa-play-circle');
