@@ -180,7 +180,7 @@ function createReportsWindow() {
 
     const remote = require('electron').remote;
     const BrowserWindow = remote.BrowserWindow;
-    const child = new BrowserWindow({
+    const reportsWindow = new BrowserWindow({
         show: false,
         height: 600,
         width: 800,
@@ -189,14 +189,14 @@ function createReportsWindow() {
         }
     });
 
-    child.loadFile('reports.html');
-    child.webContents.openDevTools();
-    child.once('ready-to-show', () => {
-        child.show(); 
-        window.reportsWindow = child;
+    reportsWindow.loadFile('reports.html');
+    // reportsWindow.webContents.openDevTools();
+    reportsWindow.once('ready-to-show', () => {
+        reportsWindow.show(); 
+        window.reportsWindow = reportsWindow;
     });
 
-    child.once('close', () => {
+    reportsWindow.once('close', () => {
         window.reportsWindow = null;
     });
   }
