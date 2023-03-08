@@ -33,7 +33,33 @@ function initializeTable() {
             resizable: true,
             rowHeight: 30,
 
-            onGridReady: function(event) { console.log('The grid is now ready'); }
+            onGridReady: function(event) { console.log('The grid is now ready'); },
+            onRowDoubleClicked: function(event) {
+                const remote = require('electron').remote;
+                const BrowserWindow = remote.BrowserWindow;
+                const detailsWindow = new BrowserWindow({
+                    show: false,
+                    height: 400,
+                    width: 640,
+                    webPreferences: {
+                        nodeIntegration: true
+                    }
+                });
+                
+                detailsWindow.loadFile('details.html');
+                // detailsWindow.webContents.openDevTools();
+                detailsWindow.webContents.on('dom-ready', () => {
+                    detailsWindow.webContents.send('message', event.data.id);
+                });
+                detailsWindow.once('ready-to-show', () => {
+                    detailsWindow.show(); 
+                    // window.reportsWindow = reportsWindow;
+                });
+                
+                detailsWindow.once('close', () => {
+                    // window.reportsWindow = null;
+                });
+            }
         };
 
         var gridDiv = document.querySelector('#gridTasks');
