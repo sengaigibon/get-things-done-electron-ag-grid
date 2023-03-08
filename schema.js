@@ -50,6 +50,9 @@ const SELECT_TASKS_CUSTOM = "SELECT t.taskId as id, t.title as title, t.status a
                             "WHERE tt.start > ? and tt.start < ?" + 
                             "GROUP BY t.taskId";
 
+const SELECT_ALL_TRACKS_BY_TASK_ID = "SELECT t.taskId as id, t.title as title, tt.start as start, tt.stop as stop, tt.total as total " + 
+                                    "FROM taskTracker tt, tasks t " + 
+                                    "WHERE tt.taskId = t.taskId and t.taskID = ? and tt.start > ? and tt.start < ?";
 
 /**** End general queries */
 
@@ -158,7 +161,7 @@ exports.startTracking = function (taskId, callback) {
 };
 
 exports.stopTracking = function (taskId, callback) {
-    let sql = "SELECT start FROM taskTracker WHERE taskId = '" + taskId + "' order by trackId desc limit 1";
+    let sql = "SELECT trackid, start FROM taskTracker WHERE taskId = '" + taskId + "' order by trackId desc limit 1";
 
     let db = this.getDB();
     db.get(sql, [], function(err, row) {
@@ -171,7 +174,7 @@ exports.stopTracking = function (taskId, callback) {
         var stop = new Date();
         var total = Math.floor((stop.getTime() - start.getTime()) / 1000); //difference in secods
 
-        let sql = "UPDATE taskTracker SET stop = '" + getDateFormatted(stop) +"', total = " + total + " WHERE taskId = '" + taskId + "'";
+        let sql = "UPDATE taskTracker SET stop = '" + getDateFormatted(stop) +"', total = " + total + " WHERE trackId = '" + row.trackId + "'";
 
         db.run(sql, [], callback);
     });
@@ -185,10 +188,6 @@ exports.getTasksByDate = function (preset = 'today', startDate = null, stopDate 
 
     switch (preset) {
         case 'yesterday':
-            query = SELECT_TASKS_CUSTOM;
-            params = [startDate, stopDate];
-            break;
-
         case 'custom':
             query = SELECT_TASKS_CUSTOM;
             params = [startDate, stopDate];
@@ -201,3 +200,11 @@ exports.getTasksByDate = function (preset = 'today', startDate = null, stopDate 
 
     db.all(query, params, callback);
 }
+
+exports.getTracksByTask = function (taskId, startDate = null, stopDate = null, callback) {
+    let db = this.getDB();
+
+    var params = [taskId, startDate, stopDate];
+
+    db.all(SELECT_ALL_TRACKS_BY_TASK_ID, params, callback);
+};
