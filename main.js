@@ -17,7 +17,7 @@ function createWindow () {
   mainWindow.loadFile('index.html')
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools({mode: 'detach'})
+  //mainWindow.webContents.openDevTools({mode: 'detach'})
 
   mainWindow.focus();
   window.mainWindow = mainWindow;
