@@ -28,7 +28,6 @@ function initializeTable()
     gridOptions = {
       columnDefs: columnDefs,
       rowData: data,
-      resizable: true,
       rowHeight: 30,
       rowSelection: 'multiple',
 
