@@ -1,5 +1,5 @@
 const _SQLITE3 = require('sqlite3').verbose();
-const _DATE_FORMAT = require('dateformat');
+const DATE_FORMAT = require('dateformat');
 
 const DB_DIR = 'db'
 const DB_NAME = 'get_things_done.sqlite'
@@ -50,7 +50,7 @@ const SELECT_TASKS_CUSTOM = "SELECT t.taskId as id, t.title as title, t.status a
                             "WHERE tt.start > ? and tt.start < ?" + 
                             "GROUP BY t.taskId";
 
-const SELECT_ALL_TRACKS_BY_TASK_ID = "SELECT t.taskId as id, t.title as title, tt.start as start, tt.stop as stop, tt.total as total " + 
+const SELECT_ALL_TRACKS_BY_TASK_ID = "SELECT tt.trackid as trackId, t.taskId as taskId, t.title as title, tt.start as start, tt.stop as stop, tt.total as total " + 
                                     "FROM taskTracker tt, tasks t " + 
                                     "WHERE tt.taskId = t.taskId and t.taskID = ? and tt.start > ? and tt.start < ?";
 
@@ -84,7 +84,7 @@ function createDB ()
  */
 function getDateFormatted(initial = null, format = "yyyy-mm-dd HH:MM:ss")
 {
-    return _DATE_FORMAT(initial ? initial : new Date(), format);
+    return DATE_FORMAT(initial ? initial : new Date(), format);
 }
 
 /**
@@ -160,8 +160,8 @@ exports.startTracking = function (taskId, callback) {
     run(sql, this, callback);
 };
 
-exports.stopTracking = function (taskId, callback) {
-    let sql = "SELECT trackid, start FROM taskTracker WHERE taskId = '" + taskId + "' order by trackId desc limit 1";
+exports.stopTracking = function (taskId, callback) { //todo: add parameter status
+    let sql = "SELECT trackid, start FROM taskTracker WHERE taskId = '" + taskId + "' order by trackId desc limit 1"; //and status = 'active'
 
     let db = this.getDB();
     db.get(sql, [], function(err, row) {
@@ -205,6 +205,17 @@ exports.getTracksByTask = function (taskId, startDate = null, stopDate = null, c
     let db = this.getDB();
 
     var params = [taskId, startDate, stopDate];
-
+    
     db.all(SELECT_ALL_TRACKS_BY_TASK_ID, params, callback);
 };
+
+exports.updateTrackData = function (trackId, startDate = null, stopDate = null, callback) {
+    let db = this.getDB();
+
+    var start = new Date(startDate);
+    var stop = new Date(stopDate);
+    var total = Math.floor((stop.getTime() - start.getTime()) / 1000); //difference in secods
+
+    let sql = "UPDATE taskTracker SET stop = '" + stopDate +"', start = '" + startDate + "', total = " + total + " WHERE trackId = " + trackId;
+    db.run(sql, [], callback);
+}
