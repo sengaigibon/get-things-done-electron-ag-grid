@@ -27,7 +27,7 @@ function initializeTable(taskId, startDate, stopDate) {
             {headerName: "Task", field: "title", width: 250, resizable: true},
             {headerName: "Began", field: "start", width: 140, resizable: true, editable: true},
             {headerName: "Ended", field: "stop", width: 140, resizable: true, editable: true},
-            {headerName: "Duration", field: "total", width: 80, editable: true},
+            {headerName: "Duration", field: "total", width: 80, editable: false},
         ];
 
         var data = setGridData(rows);
