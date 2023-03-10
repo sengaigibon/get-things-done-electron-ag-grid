@@ -1,6 +1,7 @@
 const { dialog } = require('electron').remote
 const $ = require('jQuery');
 const DATE_FORMAT = require('dateformat');
+var lastStartDate, lastStopDate;
 
 $(document).ready(function(){
     setLocalEvents();
@@ -49,6 +50,8 @@ function initializeTable() {
                 detailsWindow.loadFile('details.html');
                 detailsWindow.webContents.openDevTools({mode: 'detach'})
                 detailsWindow.webContents.on('dom-ready', () => {
+                    event.data.startDate = lastStartDate;
+                    event.data.stopDate = lastStopDate;
                     detailsWindow.webContents.send('message', event.data);
                 });
                 detailsWindow.once('ready-to-show', () => {
@@ -118,6 +121,8 @@ function searchByDates() {
  * @param {string} stopDate 
  */
 function updateGrid(preset, startDate, stopDate) {
+    lastStartDate = startDate;
+    lastStopDate = stopDate;
     var schema = require('./schema'); 
     schema.getTasksByDate(preset, startDate, stopDate, function(err, rows) {
         if (err) {

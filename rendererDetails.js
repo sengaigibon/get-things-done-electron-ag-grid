@@ -1,7 +1,7 @@
 const { dialog } = require('electron').remote
 const ipc = require('electron').ipcRenderer;
 const $ = require('jQuery');
-const _DATE_FORMAT = require('dateformat');
+const DATE_FORMAT = require('dateformat');
 
 $(document).ready(function(){
     //setLocalEvents();
@@ -12,25 +12,22 @@ window.addEventListener('DOMContentLoaded', () => {
 })
 
 ipc.on('message', (event, data) => {
-    console.log("received: " + data);
-    taskId = data; 
-    initializeTable(taskId);
+    initializeTable(data.id, data.startDate, data.stopDate);
 })
 
-function initializeTable(taskId) {
+function initializeTable(taskId, startDate, stopDate) {
     var schema = require('./schema');
-    var today = new Date();
 
-    schema.getTracksByTask(taskId, _DATE_FORMAT(today, 'yyyy-mm-dd'), _DATE_FORMAT(today.setDate(today.getDate() + 1), 'yyyy-mm-dd'), function(err, rows) {
+    schema.getTracksByTask(taskId, startDate, stopDate, function(err, rows) {
         if (err) {
             throw err;
         }
 
         var columnDefs = [
             {headerName: "Task", field: "title", width: 250, resizable: true},
-            {headerName: "Began", field: "start", width: 140, resizable: true},
-            {headerName: "Ended", field: "stop", width: 140, resizable: true},
-            {headerName: "Duration", field: "total", width: 80},
+            {headerName: "Began", field: "start", width: 140, resizable: true, editable: true},
+            {headerName: "Ended", field: "stop", width: 140, resizable: true, editable: true},
+            {headerName: "Duration", field: "total", width: 80, editable: true},
         ];
 
         var data = setGridData(rows);
@@ -41,7 +38,20 @@ function initializeTable(taskId) {
             resizable: true,
             rowHeight: 30,
 
-            onGridReady: function(event) { console.log('The grid is now ready'); },
+            onGridReady: function(event) { 
+                //
+            },
+            onCellValueChanged: function(event) {
+                var schema = require('./schema');
+                schema.updateTrackData(event.data.trackId, event.data.start, event.data.stop, function(err) {
+                    if (err) {
+                        console.log(err.message);
+                        return false;
+                    }
+                    
+                    updateGrid(event.data.taskId, startDate, stopDate);
+                });
+            }
         };
 
         var gridDiv = document.querySelector('#gridTasks');
@@ -57,8 +67,31 @@ function setGridData(rows) {
     var total;
     rows.forEach((row) => {
         total = row.total / 3600;
-        data.push({id: row.id, title: row.title, start: row.start, stop: row.stop, total: total.toFixed(3)})
+        data.push({
+            trackId: row.trackId, 
+            taskId: row.taskId, 
+            title: row.title, 
+            start: row.start, 
+            stop: row.stop, 
+            total: total.toFixed(3)
+        })
     });
     
     return data;
+}
+
+/**
+ * @param {string} taskId 
+ * @param {string} startDate 
+ * @param {string} stopDate 
+ */
+function updateGrid(taskId, startDate, stopDate) {
+    var schema = require('./schema'); 
+    schema.getTracksByTask(taskId, startDate, stopDate, function(err, rows) {
+        if (err) {
+            throw err;
+        }
+        var data = setGridData(rows);
+        gridOptions.api.setRowData(data);
+    });
 }
