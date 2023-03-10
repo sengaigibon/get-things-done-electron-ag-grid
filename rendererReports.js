@@ -48,7 +48,7 @@ function initializeTable() {
                 });
                 
                 detailsWindow.loadFile('details.html');
-                detailsWindow.webContents.openDevTools({mode: 'detach'})
+                //detailsWindow.webContents.openDevTools({mode: 'detach'})
                 detailsWindow.webContents.on('dom-ready', () => {
                     event.data.startDate = lastStartDate;
                     event.data.stopDate = lastStopDate;
