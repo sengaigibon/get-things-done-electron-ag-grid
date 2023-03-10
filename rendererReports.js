@@ -1,6 +1,6 @@
 const { dialog } = require('electron').remote
 const $ = require('jQuery');
-const _DATE_FORMAT = require('dateformat');
+const DATE_FORMAT = require('dateformat');
 
 $(document).ready(function(){
     setLocalEvents();
@@ -47,9 +47,9 @@ function initializeTable() {
                 });
                 
                 detailsWindow.loadFile('details.html');
-                // detailsWindow.webContents.openDevTools();
+                detailsWindow.webContents.openDevTools({mode: 'detach'})
                 detailsWindow.webContents.on('dom-ready', () => {
-                    detailsWindow.webContents.send('message', event.data.id);
+                    detailsWindow.webContents.send('message', event.data);
                 });
                 detailsWindow.once('ready-to-show', () => {
                     detailsWindow.show(); 
@@ -85,10 +85,10 @@ function searchPreset() {
 
     switch (preset) {
         case 'yesterday':
-            var stopDate = _DATE_FORMAT(new Date(), 'yyyy-mm-dd');
+            var stopDate = DATE_FORMAT(new Date(), 'yyyy-mm-dd');
             var startDate = new Date();
             startDate.setDate(startDate.getDate() - 1);
-            startDate = _DATE_FORMAT(startDate, 'yyyy-mm-dd');
+            startDate = DATE_FORMAT(startDate, 'yyyy-mm-dd');
             break;
     }
 
@@ -109,7 +109,7 @@ function searchByDates() {
         return;
     }
 
-    updateGrid('custom', _DATE_FORMAT(startDate, 'yyyy-mm-dd'), _DATE_FORMAT(stopDate, 'yyyy-mm-dd'));
+    updateGrid('custom', DATE_FORMAT(startDate, 'yyyy-mm-dd'), DATE_FORMAT(stopDate, 'yyyy-mm-dd'));
 }
 
 /**
