@@ -1,14 +1,15 @@
-// const agGrid = require('ag-grid-community')
-// const { dialog } = require('electron')
-const $ = require('jQuery');
+const remote = require('@electron/remote');
+const { dialog } = remote;
+const $ = require('jquery');
 
 /**
- * Initialize component events
+ * Initialize component events 
  */
-$(document).ready(function() {
+$(function() {
+    debugger;
+
     setToolBoxEvents();
     var gridDiv = document.querySelector('#gridTasks');
-    debugger
     new agGrid.Grid(gridDiv, window.gridOptions);
 });
 
@@ -176,7 +177,7 @@ function createReportsWindow() {
         return;
     }
 
-    const remote = require('electron').remote;
+    const remote = require('@electron/remote');
     const BrowserWindow = remote.BrowserWindow;
     const reportsWindow = new BrowserWindow({
         show: false,
@@ -188,7 +189,7 @@ function createReportsWindow() {
     });
 
     reportsWindow.loadFile('reports.html');
-    // reportsWindow.webContents.openDevTools();
+    reportsWindow.webContents.openDevTools({mode: "left"});
     reportsWindow.once('ready-to-show', () => {
         reportsWindow.show(); 
         window.reportsWindow = reportsWindow;
