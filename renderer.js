@@ -1,10 +1,5 @@
-// This file is required by the index.html file and will
-// be executed in the renderer process for that window.
-// No Node.js APIs are available in this process because
-// `nodeIntegration` is turned off. Use `preload.js` to
-// selectively enable features needed in the rendering
-// process.
-const { dialog } = require('electron').remote
+// const agGrid = require('ag-grid-community')
+// const { dialog } = require('electron')
 const $ = require('jQuery');
 
 /**
@@ -12,6 +7,9 @@ const $ = require('jQuery');
  */
 $(document).ready(function() {
     setToolBoxEvents();
+    var gridDiv = document.querySelector('#gridTasks');
+    debugger
+    new agGrid.Grid(gridDiv, window.gridOptions);
 });
 
 function setToolBoxEvents() {

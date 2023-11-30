@@ -24,8 +24,8 @@ function initializeTable()
     rows.forEach((row) => {
       data.push({id: row.taskId, tag: row.tag, title:row.title, startDate:row.startDate, status:row.status})
     });
-
-    gridOptions = {
+    
+    window.gridOptions = {
       columnDefs: columnDefs,
       rowData: data,
       rowHeight: 30,
@@ -33,7 +33,7 @@ function initializeTable()
 
       onGridReady: function(event) { console.log('The grid is now ready'); },
       onRowSelected: function (event) {
-        var selection = gridOptions.api.getSelectedRows();
+        var selection = window.gridOptions.api.getSelectedRows();
         window.selectedRows = selection.length ? selection : null;
         window.rowSelectedId = selection.length ? selection[0].id : null; 
         window.rowSelectedStatus = selection.length ? selection[0].status : null; 
@@ -46,10 +46,7 @@ function initializeTable()
           $('#btnStartStopIcon').addClass('fa-stop-circle');
         }
       }
-    };
-
-    var gridDiv = document.querySelector('#gridTasks');
-    new agGrid.Grid(gridDiv, gridOptions);
+    }; 
   });
 };
 
