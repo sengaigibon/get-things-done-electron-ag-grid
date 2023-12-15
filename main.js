@@ -1,8 +1,8 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow} = require('electron')
 const path = require('path')
-const remoteMain = require('@electron/remote/main');
-remoteMain.initialize();
+const remoteMain = require('@electron/remote/main')
+remoteMain.initialize()
 
 function createWindow () {
   // Create the browser window.
@@ -14,18 +14,22 @@ function createWindow () {
       nodeIntegration: true,
       contextIsolation: false 
     }
-  })
-  remoteMain.enable(mainWindow.webContents)
+  });
+  remoteMain.enable(mainWindow.webContents);
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools({mode: 'bottom'})
+  mainWindow.webContents.openDevTools({mode: 'bottom'});
 
   mainWindow.focus();
-  // let window = new Object();
   window.mainWindow = mainWindow;
+
+  // app.on('browser-window-created', (_, window) => {
+  //   debugger;
+  //   require("@electron/remote/main").enable(window.webContents)
+  // });
 } 
 
 function initialize () 

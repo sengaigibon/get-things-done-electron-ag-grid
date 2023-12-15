@@ -5,13 +5,17 @@ const $ = require('jquery');
 /**
  * Initialize component events 
  */
-$(function() {
-    debugger;
+// $(document).ready(function() {
+//     debugger;
+    
+// });
 
+window.addEventListener('DOMContentLoaded', () => {
+    debugger;
     setToolBoxEvents();
     var gridDiv = document.querySelector('#gridTasks');
     new agGrid.Grid(gridDiv, window.gridOptions);
-});
+})
 
 function setToolBoxEvents() {
     $('#btnNewTask').click(function(e) {
@@ -172,22 +176,24 @@ function startStopTask() {
 }
 
 function createReportsWindow() {
+
     if (window.reportsWindow != null) {
         window.reportsWindow.focus();
         return;
     }
 
-    const remote = require('@electron/remote');
     const BrowserWindow = remote.BrowserWindow;
     const reportsWindow = new BrowserWindow({
         show: false,
         height: 600,
         width: 800,
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            contextIsolation: false
         }
     });
 
+    // require('@electron/remote/main').enable(reportsWindow.webContents);
     reportsWindow.loadFile('reports.html');
     reportsWindow.webContents.openDevTools({mode: "left"});
     reportsWindow.once('ready-to-show', () => {
