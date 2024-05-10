@@ -1,10 +1,8 @@
-const remote = require('@electron/remote');
-const { dialog } = remote;
+// const remote = require('@electron/remote');
+// const { dialog } = remote;
 const $ = require('jquery');
 const DATE_FORMAT = require('dateformat');
 var lastStartDate, lastStopDate;
-
-debugger;
 
 $(function() {
     setLocalEvents();

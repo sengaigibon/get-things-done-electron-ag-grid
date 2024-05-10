@@ -7,14 +7,15 @@ const $ = require('jquery');
  */
 // $(document).ready(function() {
 //     debugger;
-    
+
 // });
 
 window.addEventListener('DOMContentLoaded', () => {
-    debugger;
-    setToolBoxEvents();
-    var gridDiv = document.querySelector('#gridTasks');
-    new agGrid.Grid(gridDiv, window.gridOptions);
+    setTimeout(function(){ 
+        setToolBoxEvents();
+        var gridDiv = document.querySelector('#gridTasks');
+        new agGrid.Grid(gridDiv, window.gridOptions);
+    }, 1000); 
 })
 
 function setToolBoxEvents() {
@@ -188,14 +189,14 @@ function createReportsWindow() {
         height: 600,
         width: 800,
         webPreferences: {
+            enableRemoteModule: true,
             nodeIntegration: true,
             contextIsolation: false
         }
     });
 
-    // require('@electron/remote/main').enable(reportsWindow.webContents);
     reportsWindow.loadFile('reports.html');
-    reportsWindow.webContents.openDevTools({mode: "left"});
+    // reportsWindow.webContents.openDevTools({mode: "left"});
     reportsWindow.once('ready-to-show', () => {
         reportsWindow.show(); 
         window.reportsWindow = reportsWindow;
