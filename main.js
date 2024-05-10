@@ -15,7 +15,7 @@ function createWindow () {
       contextIsolation: false 
     }
   });
-  remoteMain.enable(mainWindow.webContents);
+    remoteMain.enable(mainWindow.webContents);
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
