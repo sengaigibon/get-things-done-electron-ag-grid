@@ -10,6 +10,12 @@ $(function() {
 });
 
 window.addEventListener('DOMContentLoaded', () => {
+    //set default dates
+    lastStartDate = DATE_FORMAT(new Date(), 'yyyy-mm-dd');
+    lastStopDate = new Date();
+    lastStopDate.setDate(lastStopDate.getDate() + 1);
+    lastStopDate = DATE_FORMAT(lastStopDate, 'yyyy-mm-dd');
+
     initializeTable();
 })
 
