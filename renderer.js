@@ -1,3 +1,4 @@
+const {ipcRenderer} = require('electron');
 const remote = require('@electron/remote');
 const { dialog } = remote;
 const $ = require('jquery');
@@ -177,34 +178,7 @@ function startStopTask() {
 }
 
 function createReportsWindow() {
-
-    if (window.reportsWindow != null) {
-        window.reportsWindow.focus();
-        return;
-    }
-
-    const BrowserWindow = remote.BrowserWindow;
-    const reportsWindow = new BrowserWindow({
-        show: false,
-        height: 600,
-        width: 800,
-        webPreferences: {
-            enableRemoteModule: true,
-            nodeIntegration: true,
-            contextIsolation: false
-        }
-    });
-
-    reportsWindow.loadFile('reports.html');
-    // reportsWindow.webContents.openDevTools({mode: "left"});
-    reportsWindow.once('ready-to-show', () => {
-        reportsWindow.show(); 
-        window.reportsWindow = reportsWindow;
-    });
-
-    reportsWindow.once('close', () => {
-        window.reportsWindow = null;
-    });
+    ipcRenderer.send('openReportsWindow');
   }
 
 function checkTask() {
