@@ -1,5 +1,6 @@
-// const remote = require('@electron/remote');
-// const { dialog } = remote;
+const {ipcRenderer} = require('electron');
+const remote = require('@electron/remote');
+const { dialog } = remote;
 const $ = require('jquery');
 const DATE_FORMAT = require('dateformat');
 var lastStartDate, lastStopDate;
@@ -37,32 +38,7 @@ function initializeTable() {
 
             onGridReady: function(event) { console.log('The grid is now ready'); },
             onRowDoubleClicked: function(event) {
-                const remote = require('electron').remote;
-                const BrowserWindow = remote.BrowserWindow;
-                const detailsWindow = new BrowserWindow({
-                    show: false,
-                    height: 400,
-                    width: 640,
-                    webPreferences: {
-                        nodeIntegration: true
-                    }
-                });
-                
-                detailsWindow.loadFile('details.html');
-                //detailsWindow.webContents.openDevTools({mode: 'detach'})
-                detailsWindow.webContents.on('dom-ready', () => {
-                    event.data.startDate = lastStartDate;
-                    event.data.stopDate = lastStopDate;
-                    detailsWindow.webContents.send('message', event.data);
-                });
-                detailsWindow.once('ready-to-show', () => {
-                    detailsWindow.show(); 
-                    // window.reportsWindow = reportsWindow;
-                });
-                
-                detailsWindow.once('close', () => {
-                    // window.reportsWindow = null;
-                });
+                ipcRenderer.send('openTaskDetails', event.data.id, lastStartDate, lastStopDate);
             }
         };
 

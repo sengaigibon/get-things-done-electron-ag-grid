@@ -1,4 +1,6 @@
 /node_modules
 .DS_Store
-/db
+/db/*
 /db/get_things_done.sqlite
+.vscode/launch.json
+db/get_things_done.sqlite
