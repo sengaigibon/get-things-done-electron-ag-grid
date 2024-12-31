@@ -9,15 +9,15 @@ function createWindow () {
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, '/js/', 'preload.js'),
       nodeIntegration: true,
       contextIsolation: false 
     }
   });
     remoteMain.enable(mainWindow.webContents);
 
-  mainWindow.loadFile('index.html')
-  // mainWindow.webContents.openDevTools({mode: 'bottom'});
+  mainWindow.loadFile('./pages/index.html')
+  mainWindow.webContents.openDevTools({mode: 'bottom'});
   mainWindow.focus();
 
 } 
@@ -65,7 +65,7 @@ ipcMain.on('openReportsWindow', (event) => {
   });
   remoteMain.enable(reportsWindow.webContents);
 
-  reportsWindow.loadFile('reports.html');
+  reportsWindow.loadFile('./pages/reports.html');
   // reportsWindow.webContents.openDevTools({mode: "left"});
   reportsWindow.once('ready-to-show', () => {
       reportsWindow.show(); 
@@ -86,7 +86,7 @@ ipcMain.on('openTaskDetails', (event, taskId, startDate, stopDate) => {
   });
   remoteMain.enable(detailsWindow.webContents);
 
-  detailsWindow.loadFile('details.html');
+  detailsWindow.loadFile('./pages/details.html');
   detailsWindow.webContents.openDevTools({mode: 'left'})
   detailsWindow.webContents.on('dom-ready', () => {
       detailsWindow.webContents.send('initializeTable', taskId, startDate, stopDate);
