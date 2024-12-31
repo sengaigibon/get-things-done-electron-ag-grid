@@ -70,7 +70,7 @@ function createTask() {
         taskTag = 'General';
     }
 
-    var schema = require('./schema');
+    var schema = require('./js/schema');
     schema.insertNew(taskTag, taskName, function(err) {
         if (err) {
             console.log(err.message);
@@ -97,7 +97,7 @@ function completeTask() {
         return;
     }
 
-    let schema = require('./schema');
+    let schema = require('./js/schema');
     selectedRows.forEach(function(row) {
         if (row.status == 'active') { //skip the task if it's active
             return; 
@@ -119,7 +119,7 @@ function startStopTask() {
 
     if (!checkTask()) return;
 
-    var schema = require('./schema');
+    var schema = require('./js/schema');
 
     switch (window.rowSelectedStatus) {
         case 'idle':
