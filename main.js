@@ -24,7 +24,7 @@ function createWindow () {
 
 function initialize () 
 {
-    var dbSchema = require('./schema');
+    var dbSchema = require('./js/schema');
     dbSchema.initDb();
     createWindow();
 }
