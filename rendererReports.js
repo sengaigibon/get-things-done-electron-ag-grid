@@ -10,11 +10,17 @@ $(function() {
 });
 
 window.addEventListener('DOMContentLoaded', () => {
+    //set default dates
+    lastStartDate = DATE_FORMAT(new Date(), 'yyyy-mm-dd');
+    lastStopDate = new Date();
+    lastStopDate.setDate(lastStopDate.getDate() + 1);
+    lastStopDate = DATE_FORMAT(lastStopDate, 'yyyy-mm-dd');
+
     initializeTable();
 })
 
 function initializeTable() {
-    var schema = require('./schema');
+    var schema = require('./js/schema');
 
     schema.getTasksByDate('today', null, null, function(err, rows) {
         if (err) {
@@ -100,7 +106,7 @@ function searchByDates() {
 function updateGrid(preset, startDate, stopDate) {
     lastStartDate = startDate;
     lastStopDate = stopDate;
-    var schema = require('./schema'); 
+    var schema = require('./js/schema'); 
     schema.getTasksByDate(preset, startDate, stopDate, function(err, rows) {
         if (err) {
             throw err;

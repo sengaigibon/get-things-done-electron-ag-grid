@@ -5,7 +5,7 @@ window.selectedRows = null;
 
 function initializeTable()
 {
-  var schema = require('./schema');
+  var schema = require('./js/schema');
 
   schema.getAllRows(function(err, rows) {
     if (err) {
@@ -31,7 +31,7 @@ function initializeTable()
       rowHeight: 30,
       rowSelection: 'multiple',
 
-      onGridReady: function(event) { console.log('The grid is now ready'); },
+      onGridReady: function(event) { console.log('Grid ready, data loaded.'); },
       onRowSelected: function (event) {
         var selection = window.gridOptions.api.getSelectedRows();
         window.selectedRows = selection.length ? selection : null;
