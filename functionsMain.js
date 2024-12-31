@@ -3,9 +3,6 @@ const remote = require('@electron/remote');
 const { dialog } = remote;
 const $ = require('jquery');
 
-/**
- * Initialize component events 
- */
 // $(document).ready(function() {
 //     debugger;
 
