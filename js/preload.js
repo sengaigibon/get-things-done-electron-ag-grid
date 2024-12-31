@@ -5,7 +5,7 @@ window.selectedRows = null;
 
 function initializeTable()
 {
-  var schema = require('./js/schema');
+  var schema = require('./schema');
 
   schema.getAllRows(function(err, rows) {
     if (err) {
