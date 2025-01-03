@@ -20,7 +20,7 @@ window.addEventListener('DOMContentLoaded', () => {
 })
 
 function initializeTable() {
-    var schema = require('./js/schema');
+    var schema = require('../js/schema');
 
     schema.getTasksByDate('today', null, null, function(err, rows) {
         if (err) {
@@ -106,7 +106,7 @@ function searchByDates() {
 function updateGrid(preset, startDate, stopDate) {
     lastStartDate = startDate;
     lastStopDate = stopDate;
-    var schema = require('./js/schema'); 
+    var schema = require('../js/schema'); 
     schema.getTasksByDate(preset, startDate, stopDate, function(err, rows) {
         if (err) {
             throw err;
