@@ -17,7 +17,7 @@ ipc.on('initializeTable', (event, taskId, startDate, stopDate) => {
 })
 
 function initializeTable(taskId, startDate, stopDate) {
-    var schema = require('./schema');
+    var schema = require('../js/schema');
 
     schema.getTracksByTask(taskId, startDate, stopDate, function(err, rows) {
         if (err) {
@@ -43,7 +43,7 @@ function initializeTable(taskId, startDate, stopDate) {
                 //
             },
             onCellValueChanged: function(event) {
-                var schema = require('./schema');
+                var schema = require('../js/schema');
                 schema.updateTrackData(event.data.trackId, event.data.start, event.data.stop, function(err) {
                     if (err) {
                         console.log(err.message);
@@ -87,7 +87,7 @@ function setGridData(rows) {
  * @param {string} stopDate 
  */
 function updateGrid(taskId, startDate, stopDate) {
-    var schema = require('./schema'); 
+    var schema = require('../js/schema'); 
     schema.getTracksByTask(taskId, startDate, stopDate, function(err, rows) {
         if (err) {
             throw err;

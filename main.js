@@ -17,9 +17,8 @@ function createWindow () {
     remoteMain.enable(mainWindow.webContents);
 
   mainWindow.loadFile('./pages/index.html')
-  mainWindow.webContents.openDevTools({mode: 'bottom'});
+  // mainWindow.webContents.openDevTools({mode: 'bottom'});
   mainWindow.focus();
-
 } 
 
 function initialize () 
@@ -34,24 +33,14 @@ function initialize ()
 // Some APIs can only be used after this event occurs.
  app.whenReady().then(initialize);
 
-// // Quit when all windows are closed.
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {
     app.quit();
   }
 });
 
-// app.on('activate', function () {
-//   // On macOS it's common to re-create a window in the app when the
-//   // dock icon is clicked and there are no other windows open.
-//   if (BrowserWindow.getAllWindows().length === 0) createWindow()
-// })
 
 ipcMain.on('openReportsWindow', (event) => {
-  // if (window.reportsWindow != null) {
-  //       window.reportsWindow.focus();
-  //       return;
-  //   }
 
   const reportsWindow = new BrowserWindow({
       show: false,
@@ -68,7 +57,7 @@ ipcMain.on('openReportsWindow', (event) => {
   reportsWindow.loadFile('./pages/reports.html');
   // reportsWindow.webContents.openDevTools({mode: "left"});
   reportsWindow.once('ready-to-show', () => {
-      reportsWindow.show(); 
+    reportsWindow.show(); 
   });
 });
 
