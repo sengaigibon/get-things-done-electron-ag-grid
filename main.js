@@ -44,8 +44,8 @@ ipcMain.on('openReportsWindow', (event) => {
 
   const reportsWindow = new BrowserWindow({
       show: false,
-      height: 800,
-      width: 1200,
+      height: 610,
+      width: 800,
       webPreferences: {
           enableRemoteModule: true,
           nodeIntegration: true,
@@ -55,7 +55,7 @@ ipcMain.on('openReportsWindow', (event) => {
   remoteMain.enable(reportsWindow.webContents);
 
   reportsWindow.loadFile('./pages/reports.html');
-  // reportsWindow.webContents.openDevTools({mode: "left"});
+  // reportsWindow.webContents.openDevTools({mode: 'detach'});
   reportsWindow.once('ready-to-show', () => {
     reportsWindow.show(); 
   });
@@ -76,7 +76,7 @@ ipcMain.on('openTaskDetails', (event, taskId, startDate, stopDate) => {
   remoteMain.enable(detailsWindow.webContents);
 
   detailsWindow.loadFile('./pages/details.html');
-  detailsWindow.webContents.openDevTools({mode: 'left'})
+  // detailsWindow.webContents.openDevTools({mode: 'detach'});
   detailsWindow.webContents.on('dom-ready', () => {
       detailsWindow.webContents.send('initializeTable', taskId, startDate, stopDate);
   });
