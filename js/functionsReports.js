@@ -39,10 +39,8 @@ function initializeTable() {
         gridOptions = {
             columnDefs: columnDefs,
             rowData: data,
-            resizable: true,
             rowHeight: 30,
 
-            onGridReady: function(event) { console.log('The grid is now ready'); },
             onRowDoubleClicked: function(event) {
                 ipcRenderer.send('openTaskDetails', event.data.id, lastStartDate, lastStopDate);
             }
@@ -54,11 +52,11 @@ function initializeTable() {
 }
 
 function setLocalEvents() {
-    $('#btnSearchPreset').click(function(e) {
+    $('#btnSearchPreset').on('click', function(e) {
         searchPreset()
     });
 
-    $('#btnSearchCustom').click(function(e) {
+    $('#btnSearchCustom').on('click', function(e) {
         searchByDates()
     });
 
@@ -76,6 +74,10 @@ function searchPreset() {
             startDate.setDate(startDate.getDate() - 1);
             startDate = DATE_FORMAT(startDate, 'yyyy-mm-dd');
             break;
+
+        default:
+            startDate = lastStartDate;
+            stopDate = lastStopDate;
     }
 
     updateGrid(preset, startDate, stopDate);

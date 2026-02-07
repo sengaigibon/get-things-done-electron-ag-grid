@@ -1,21 +1,14 @@
-const remote = require('@electron/remote');
-const { dialog } = remote;
 const ipc = require('electron').ipcRenderer;
-const $ = require('jquery');
-const DATE_FORMAT = require('dateformat');
-
-$(document).ready(function(){
-    //setLocalEvents();
-});
-
-window.addEventListener('DOMContentLoaded', () => {
-    //
-})
 
 ipc.on('initializeTable', (event, taskId, startDate, stopDate) => {
     initializeTable(taskId, startDate, stopDate);
 })
 
+/**
+ * @param {number} taskId
+ * @param {string} startDate
+ * @param {string} stopDate
+ */
 function initializeTable(taskId, startDate, stopDate) {
     var schema = require('../js/schema');
 
@@ -36,12 +29,8 @@ function initializeTable(taskId, startDate, stopDate) {
         gridOptions = {
             columnDefs: columnDefs,
             rowData: data,
-            resizable: true,
             rowHeight: 30,
 
-            onGridReady: function(event) { 
-                //
-            },
             onCellValueChanged: function(event) {
                 var schema = require('../js/schema');
                 schema.updateTrackData(event.data.trackId, event.data.start, event.data.stop, function(err) {
