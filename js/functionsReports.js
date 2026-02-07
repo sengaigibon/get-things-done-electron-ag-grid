@@ -28,10 +28,10 @@ function initializeTable() {
         }
 
         var columnDefs = [
-            {headerName: "Id", field: "id", checkboxSelection: true, width: 75, sortable: true},
-            {headerName: "Task", field: "title", width: 390, resizable: true},
-            {headerName: "Total time", field: "total", width: 150},
-            {headerName: "Status", field: "status", width: 150},
+            {headerName: "Id", field: "id", checkboxSelection: true, width: 75, sortable: true, resizable: false},
+            {headerName: "Task", field: "title", width: 390, resizable: false},
+            {headerName: "Total time", field: "total", width: 150, resizable: false},
+            {headerName: "Status", field: "status", width: 150, resizable: false},
         ];
 
         var data = setGridData(rows);
@@ -40,14 +40,16 @@ function initializeTable() {
             columnDefs: columnDefs,
             rowData: data,
             rowHeight: 30,
-
+            defaultColDef: {
+                resizable: false
+            },
             onRowDoubleClicked: function(event) {
                 ipcRenderer.send('openTaskDetails', event.data.id, lastStartDate, lastStopDate);
             }
         };
 
         var gridDiv = document.querySelector('#gridTasks');
-        new agGrid.Grid(gridDiv, gridOptions);
+        agGrid.createGrid(gridDiv, gridOptions);
     });
 }
 
@@ -158,7 +160,7 @@ function updateGrid(startDate, stopDate) {
             throw err;
         }
         var data = setGridData(rows);
-        gridOptions.api.setRowData(data);
+        gridOptions.api.setGridOption('rowData', data);
     })
 }
 

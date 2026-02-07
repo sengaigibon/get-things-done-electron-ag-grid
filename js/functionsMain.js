@@ -12,7 +12,7 @@ window.addEventListener('DOMContentLoaded', () => {
     setTimeout(function(){ 
         setToolBoxEvents();
         var gridDiv = document.querySelector('#gridTasks');
-        new agGrid.Grid(gridDiv, window.gridOptions);
+        agGrid.createGrid(gridDiv, window.gridOptions);
     }, 1000); 
 })
 
@@ -48,7 +48,7 @@ function updateGrid(schema) {
             data.push({id: row.taskId, tag: row.tag, title:row.title, startDate:row.startDate, status:row.status})
         });
 
-        gridOptions.api.setRowData(data);
+        gridOptions.api.setGridOption('rowData', data);
 
         window.rowSelectedId = null;
         window.rowSelectedStatus = null;

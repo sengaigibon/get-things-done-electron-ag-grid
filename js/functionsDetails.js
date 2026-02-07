@@ -18,10 +18,10 @@ function initializeTable(taskId, startDate, stopDate) {
         }
 
         var columnDefs = [
-            {headerName: "Task", field: "title", width: 250, resizable: true},
-            {headerName: "Began", field: "start", width: 140, resizable: true, editable: true},
-            {headerName: "Ended", field: "stop", width: 140, resizable: true, editable: true},
-            {headerName: "Duration", field: "total", width: 80, editable: false},
+            {headerName: "Task", field: "title", width: 250, resizable: false},
+            {headerName: "Began", field: "start", width: 140, resizable: false, editable: true},
+            {headerName: "Ended", field: "stop", width: 140, resizable: false, editable: true},
+            {headerName: "Duration", field: "total", width: 80, editable: false, resizable: false},
         ];
 
         var data = setGridData(rows);
@@ -30,7 +30,9 @@ function initializeTable(taskId, startDate, stopDate) {
             columnDefs: columnDefs,
             rowData: data,
             rowHeight: 30,
-
+            defaultColDef: {
+                resizable: false
+            },
             onCellValueChanged: function(event) {
                 var schema = require('../js/schema');
                 schema.updateTrackData(event.data.trackId, event.data.start, event.data.stop, function(err) {
@@ -45,7 +47,7 @@ function initializeTable(taskId, startDate, stopDate) {
         };
 
         var gridDiv = document.querySelector('#gridTasks');
-        new agGrid.Grid(gridDiv, gridOptions);
+        agGrid.createGrid(gridDiv, gridOptions);
     });
 }
 
@@ -82,6 +84,6 @@ function updateGrid(taskId, startDate, stopDate) {
             throw err;
         }
         var data = setGridData(rows);
-        gridOptions.api.setRowData(data);
+        gridOptions.api.setGridOption('rowData', data);
     });
 }
