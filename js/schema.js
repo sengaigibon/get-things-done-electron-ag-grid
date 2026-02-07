@@ -1,5 +1,6 @@
 const _SQLITE3 = require('sqlite3').verbose();
-const DATE_FORMAT = require('dateformat');
+const dateformat = require('dateformat');
+const dateFormatter = dateformat.default || dateformat;
 
 const DB_DIR = 'db'
 const DB_NAME = 'get_things_done.sqlite'
@@ -84,7 +85,7 @@ function createDB ()
  */
 function getDateFormatted(initial = null, format = "yyyy-mm-dd HH:MM:ss")
 {
-    return DATE_FORMAT(initial ? initial : new Date(), format);
+    return dateFormatter(initial ? initial : new Date(), format);
 }
 
 /**
