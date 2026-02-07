@@ -1,5 +1,4 @@
 const ipc = require('electron').ipcRenderer;
-const $ = require('jquery');
 
 ipc.on('initializeTable', (event, taskId, startDate, stopDate) => {
     initializeTable(taskId, startDate, stopDate);
@@ -30,7 +29,6 @@ function initializeTable(taskId, startDate, stopDate) {
         gridOptions = {
             columnDefs: columnDefs,
             rowData: data,
-            resizable: true,
             rowHeight: 30,
 
             onCellValueChanged: function(event) {

@@ -39,10 +39,8 @@ function initializeTable() {
         gridOptions = {
             columnDefs: columnDefs,
             rowData: data,
-            resizable: true,
             rowHeight: 30,
 
-            onGridReady: function(event) { console.log('The grid is now ready'); },
             onRowDoubleClicked: function(event) {
                 ipcRenderer.send('openTaskDetails', event.data.id, lastStartDate, lastStopDate);
             }
