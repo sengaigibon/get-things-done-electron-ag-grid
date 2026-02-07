@@ -22,7 +22,7 @@ window.addEventListener('DOMContentLoaded', () => {
 function initializeTable() {
     var schema = require('../js/schema');
 
-    schema.getTasksByDate('today', null, null, function(err, rows) {
+    schema.getTasksByDate(lastStartDate, lastStopDate, function(err, rows) {
         if (err) {
         throw err;
         }
@@ -68,11 +68,56 @@ function searchPreset() {
     var stopDate = null;
 
     switch (preset) {
+        case 'today':
+            startDate = DATE_FORMAT(new Date(), 'yyyy-mm-dd');
+            stopDate = new Date();
+            stopDate.setDate(stopDate.getDate() + 1);
+            stopDate = DATE_FORMAT(stopDate, 'yyyy-mm-dd');
+            break;
+
         case 'yesterday':
-            var stopDate = DATE_FORMAT(new Date(), 'yyyy-mm-dd');
-            var startDate = new Date();
+            stopDate = DATE_FORMAT(new Date(), 'yyyy-mm-dd');
+            startDate = new Date();
             startDate.setDate(startDate.getDate() - 1);
             startDate = DATE_FORMAT(startDate, 'yyyy-mm-dd');
+            break;
+
+        case 'thisWeek':
+            var today = new Date();
+            var dayOfWeek = today.getDay();
+            var monday = new Date(today);
+            monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+            startDate = DATE_FORMAT(monday, 'yyyy-mm-dd');
+            var nextMonday = new Date(monday);
+            nextMonday.setDate(monday.getDate() + 7);
+            stopDate = DATE_FORMAT(nextMonday, 'yyyy-mm-dd');
+            break;
+
+        case 'lastWeek':
+            var today = new Date();
+            var dayOfWeek = today.getDay();
+            var thisMonday = new Date(today);
+            thisMonday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+            var lastMonday = new Date(thisMonday);
+            lastMonday.setDate(thisMonday.getDate() - 7);
+            startDate = DATE_FORMAT(lastMonday, 'yyyy-mm-dd');
+            stopDate = DATE_FORMAT(thisMonday, 'yyyy-mm-dd');
+            break;
+
+        case 'thisMonth':
+            var today = new Date();
+            var firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+            startDate = DATE_FORMAT(firstDay, 'yyyy-mm-dd');
+            var nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+            stopDate = DATE_FORMAT(nextMonth, 'yyyy-mm-dd');
+            break;
+
+        case 'lastMonth':
+            var today = new Date();
+            var firstDayLastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+            startDate = DATE_FORMAT(firstDayLastMonth, 'yyyy-mm-dd');
+            var firstDayThisMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+            stopDate = DATE_FORMAT(firstDayThisMonth, 'yyyy-mm-dd');
             break;
 
         default:
@@ -80,7 +125,7 @@ function searchPreset() {
             stopDate = lastStopDate;
     }
 
-    updateGrid(preset, startDate, stopDate);
+    updateGrid(startDate, stopDate);
 }
 
 function searchByDates() {
@@ -97,19 +142,18 @@ function searchByDates() {
         return;
     }
 
-    updateGrid('custom', DATE_FORMAT(startDate, 'yyyy-mm-dd'), DATE_FORMAT(stopDate, 'yyyy-mm-dd'));
+    updateGrid(DATE_FORMAT(startDate, 'yyyy-mm-dd'), DATE_FORMAT(stopDate, 'yyyy-mm-dd'));
 }
 
 /**
- * @param {string} preset 
  * @param {string} startDate 
  * @param {string} stopDate 
  */
-function updateGrid(preset, startDate, stopDate) {
+function updateGrid(startDate, stopDate) {
     lastStartDate = startDate;
     lastStopDate = stopDate;
     var schema = require('../js/schema'); 
-    schema.getTasksByDate(preset, startDate, stopDate, function(err, rows) {
+    schema.getTasksByDate(startDate, stopDate, function(err, rows) {
         if (err) {
             throw err;
         }

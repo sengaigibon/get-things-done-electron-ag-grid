@@ -160,8 +160,8 @@ exports.startTracking = function (taskId, callback) {
     run(sql, this, callback);
 };
 
-exports.stopTracking = function (taskId, callback) { //todo: add parameter status
-    let sql = "SELECT trackid, start FROM taskTracker WHERE taskId = '" + taskId + "' order by trackId desc limit 1"; //and status = 'active'
+exports.stopTracking = function (taskId, callback) { 
+    let sql = "SELECT trackid, start FROM taskTracker WHERE taskId = '" + taskId + "' order by trackId desc limit 1";
 
     let db = this.getDB();
     db.get(sql, [], function(err, row) {
@@ -180,25 +180,12 @@ exports.stopTracking = function (taskId, callback) { //todo: add parameter statu
     });
 };
 
-exports.getTasksByDate = function (preset = 'today', startDate = null, stopDate = null, callback) {
+exports.getTasksByDate = function (startDate = null, stopDate = null, callback) {
     let db = this.getDB();
 
-    var query;
-    var params = [];
+    var params = [startDate, stopDate];
 
-    switch (preset) {
-        case 'yesterday':
-        case 'custom':
-            query = SELECT_TASKS_CUSTOM;
-            params = [startDate, stopDate];
-            break;
-        default:
-        case 'today':
-            query = SELECT_TODAYS_TASKS;
-            break;
-    }
-
-    db.all(query, params, callback);
+    db.all(SELECT_TASKS_CUSTOM, params, callback);
 }
 
 exports.getTracksByTask = function (taskId, startDate = null, stopDate = null, callback) {
