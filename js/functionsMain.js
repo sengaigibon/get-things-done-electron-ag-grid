@@ -34,6 +34,9 @@ function setToolBoxEvents() {
     });
 }
 
+/**
+ * @param {Object} schema
+ */
 function updateGrid(schema) {
     schema.getAllRows(function(err, rows) {
         if (err) {

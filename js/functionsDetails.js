@@ -5,6 +5,11 @@ ipc.on('initializeTable', (event, taskId, startDate, stopDate) => {
     initializeTable(taskId, startDate, stopDate);
 })
 
+/**
+ * @param {number} taskId
+ * @param {string} startDate
+ * @param {string} stopDate
+ */
 function initializeTable(taskId, startDate, stopDate) {
     var schema = require('../js/schema');
 
