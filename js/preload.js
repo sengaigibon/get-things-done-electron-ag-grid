@@ -13,10 +13,10 @@ function initializeTable()
     }
 
     var columnDefs = [
-      {headerName: "Id", field: "id", checkboxSelection: true, width: 75, sortable: true, resizable: false},
+      {headerName: "Id", field: "id", width: 60, sortable: true, resizable: false},
       {headerName: "Tag", field: "tag", width: 80, resizable: false},
-      {headerName: "Title", field: "title", width: 390, resizable: false},
-      {headerName: "Start date", field: "startDate", width: 150, resizable: false},
+      {headerName: "Title", field: "title", width: 340, resizable: false},
+      {headerName: "Start date", field: "startDate", width: 165, resizable: false},
       {headerName: "Status", field: "status", width: 70, sortable: true, resizable: false},
     ];
 
