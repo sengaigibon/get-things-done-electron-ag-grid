@@ -7,63 +7,97 @@
 }
 
 body {
-    background-color: gainsboro;
-    font-family: 'titillium_webregular';
+    background: linear-gradient(135deg, #7dcfff 0%, #000 100%);
+    font-family: 'titillium_webregular', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 15px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    box-sizing: border-box;
   }
 
   .topToolbox {
-    width: 100%;
-    overflow: auto;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    padding: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
   }
 
   .topToolbox ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    display: flex;
+    gap: 12px;
   }
 
   .topToolbox li {
     float: left;
-    height: 46px;
-    border-style: solid;
-    border-color: gray;
-    border-width: thin;
-    margin-right: 10px;
-    background-color: #2157a9;
+    height: 56px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #000 0%, #7dcfff 100%);
     font-size: 15px;
+    box-shadow: 0 4px 15px rgba(125, 207, 255, 0.4);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
+
+  .topToolbox li:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(125, 207, 255, 0.6);
+  }
+
+  .topToolbox li:active {
+    transform: translateY(0);
   }
 
   .topToolbox li span {
-    vertical-align: super;
+    vertical-align: middle;
+    margin-left: 8px;
+    font-weight: 500;
   }
 
   .topToolbox a:hover {
-    background-color: #5189C7;
+    background: rgba(255, 255, 255, 0.1);
   }
 
   .topToolbox a {
     width: -webkit-fill-available;
     height: -webkit-fill-available;
-    float: left; 
-    text-align: center; 
-    padding: 5px 5px; 
-    transition: all 0.3s ease; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px; 
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
     color: white; 
     text-decoration: none;
   }
 
   .topToolbox i {
-    font-size: 36px;
+    font-size: 28px;
   }
 
   .margin-10px {
-    margin-top: 10px;
+    margin-top: 16px;
+    flex-shrink: 0;
   }
 
   .tasksTable {
-    height: 81vh;
+    flex: 1;
     width: 100%;
+    min-height: 0;
+  }
+
+  .tasksFields {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0; 
   }
 
   .tasksFields ul {
@@ -71,6 +105,8 @@ body {
     margin: 0;
     padding: 0;
     overflow: hidden;
+    display: flex;
+    gap: 12px;
   }
 
   .tasksFields li {
@@ -78,16 +114,37 @@ body {
   }
 
   .tasksFields .tag {
-    width: 70px;
-    border-radius: 4px;
-    height: 15px;
+    width: 100px;
+    border-radius: 8px;
+    height: 40px;
+    border: 2px solid #e0e7ff;
+    padding: 0 12px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: white;
+  }
+
+  .tasksFields .tag:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
   }
 
   .tasksFields .taskName {
     width: 536px;
-    margin-left: 3px;
-    border-radius: 4px;
-    height: 15px;
+    border-radius: 8px;
+    height: 40px;
+    border: 2px solid #e0e7ff;
+    padding: 0 12px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: white;
+  }
+
+  .tasksFields .taskName:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
   }
 
   .tasksFields .backspace {

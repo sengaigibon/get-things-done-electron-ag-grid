@@ -17,7 +17,7 @@ function createWindow () {
     remoteMain.enable(mainWindow.webContents);
 
   mainWindow.loadFile('./pages/index.html')
-  // mainWindow.webContents.openDevTools({mode: 'bottom'});
+  // mainWindow.webContents.openDevTools({mode: 'detach'});
   mainWindow.focus();
 } 
 
@@ -46,6 +46,7 @@ ipcMain.on('openReportsWindow', (event) => {
       show: false,
       height: 610,
       width: 800,
+      resizable: false,
       webPreferences: {
           enableRemoteModule: true,
           nodeIntegration: true,

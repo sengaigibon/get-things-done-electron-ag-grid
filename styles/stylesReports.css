@@ -7,46 +7,121 @@
   }
 
 body {
-  background-color: gainsboro;
-  font-family: 'titillium_webregular';
+  background: linear-gradient(135deg, #7dcfff 0%, #000 100%);
+  font-family: 'titillium_webregular', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 15px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  box-sizing: border-box;
 }
 
 .filters {
-  width: 100%;
-  height: 40px;
-  border-bottom-color: deepskyblue;
-  border-bottom-style: groove;
-  background-color: aliceblue;
+  min-height: 50px;
+  padding: 20px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: nowrap;
 }
 .filters .preselected {
-  width: 35%;
-  display: inline-block;
-  vertical-align: -webkit-baseline-middle;
+  display: flex;
+  align-items: center;
 }
 
 .filters .dates, .date-start,.date-end,.date-action {
-  display: inline-block;
-  vertical-align: -webkit-baseline-middle;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filters select,
+.filters input[type="date"] {
+  height: 40px;
+  border: 2px solid #b3e5ff;
+  border-radius: 8px;
+  padding: 0 12px;
+  font-size: 14px;
+  background: white;
+  transition: all 0.3s ease;
+  font-family: 'titillium_webregular', sans-serif;
+}
+
+.filters select:focus,
+.filters input[type="date"]:focus {
+  outline: none;
+  border-color: #7dcfff;
+  box-shadow: 0 0 0 3px rgba(125, 207, 255, 0.2);
+}
+
+.filters button {
+  height: 40px;
+  padding: 0 11px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #000 0%, #7dcfff 100%);
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(125, 207, 255, 0.4);
+  font-family: 'titillium_webregular', sans-serif;
+}
+
+.filters button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(125, 207, 255, 0.6);
+}
+
+.filters button:active {
+  transform: translateY(0);
+}
+
+.filters label {
+  font-weight: 500;
+  color: #4a5568;
+  vertical-align: middle;
 }
 
 .totals {
-  margin-top: 10px;
+  margin-top: 16px;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  display: inline-block;
   float: right;
 }
 
 .totals .texts,.hours {
   display: inline-block;
   margin-right: 10px;
+  font-weight: 500;
+  color: #4a5568;
+}
+
+.totals .hours {
+  color: #667eea;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .tasksTable {
-  height: 485px;
+  height: 350px;
   width: 100%;
-  margin-top: 12px;
+  margin-top: 16px;
 }
 
 .margin-20px {
-  margin-left: 20px; 
+  margin: 0;
 }
 
 .align-bottom {
