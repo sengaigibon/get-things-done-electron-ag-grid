@@ -56,7 +56,7 @@ ipcMain.on('openReportsWindow', (event) => {
   remoteMain.enable(reportsWindow.webContents);
 
   reportsWindow.loadFile('./pages/reports.html');
-  reportsWindow.webContents.openDevTools({mode: 'detach'});
+  // reportsWindow.webContents.openDevTools({mode: 'detach'});
   reportsWindow.once('ready-to-show', () => {
     reportsWindow.show(); 
   });
