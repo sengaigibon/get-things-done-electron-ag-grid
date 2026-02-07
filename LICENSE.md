@@ -1,4 +1,4 @@
-Copyright (c) 2026 [Javier Caballero/sengaigibon]
+Copyright (c) 2026 Javier Caballero/sengaigibon
 
 # PolyForm Noncommercial License 1.0.0
 
