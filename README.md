@@ -1,5 +1,15 @@
 # Get Things Done
 
+![License: PolyForm Noncommercial 1.0.0](https://img.shields.io/badge/License-PolyForm_Noncommercial_1.0.0-blue)
+
+## License
+
+This project is licensed under the **PolyForm Noncommercial License 1.0.0**. 
+
+This means you are free to use, modify, and share this software for personal and non-commercial purposes. **Commercial use is strictly prohibited.**
+
+Full details can be found in the [LICENSE.md](./LICENSE.md) file.
+
 ## Overview
 "Get Things Done" is a task management application built using the Electron framework. It helps users organize, track, and manage their tasks efficiently. The application is designed to be cross-platform, running on Windows, macOS, and Linux.
 
