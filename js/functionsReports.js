@@ -74,6 +74,10 @@ function searchPreset() {
             startDate.setDate(startDate.getDate() - 1);
             startDate = DATE_FORMAT(startDate, 'yyyy-mm-dd');
             break;
+
+        default:
+            startDate = lastStartDate;
+            stopDate = lastStopDate;
     }
 
     updateGrid(preset, startDate, stopDate);
