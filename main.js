@@ -17,7 +17,7 @@ function createWindow () {
     remoteMain.enable(mainWindow.webContents);
 
   mainWindow.loadFile('./pages/index.html')
-  // mainWindow.webContents.openDevTools({mode: 'detach'});
+  mainWindow.webContents.openDevTools({mode: 'detach'});
   mainWindow.focus();
 } 
 

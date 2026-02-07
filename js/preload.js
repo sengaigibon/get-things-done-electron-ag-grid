@@ -26,6 +26,7 @@ function initializeTable()
     });
     
     window.gridOptions = {
+      theme: agGrid.themeQuartz,
       columnDefs: columnDefs,
       rowData: data,
       rowHeight: 30,

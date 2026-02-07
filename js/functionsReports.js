@@ -37,6 +37,7 @@ function initializeTable() {
         var data = setGridData(rows);
 
         gridOptions = {
+            theme: agGrid.themeQuartz,
             columnDefs: columnDefs,
             rowData: data,
             rowHeight: 30,
