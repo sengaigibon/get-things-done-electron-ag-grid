@@ -31,13 +31,18 @@ function initializeTable()
       rowData: data,
       rowHeight: 30,
       headerHeight: 30,
+      rowSelection: { 
+        mode: 'multiRow',
+        checkboxes: true,
+        enableClickSelection: true
+      },
 
       onGridReady: function(event) { console.log('Grid ready, data loaded.'); },
-      onRowSelected: function (event) {
-        var selection = window.gridOptions.api.getSelectedRows();
+      onSelectionChanged: function (event) {
+        var selection = event.api.getSelectedRows();
         window.selectedRows = selection.length ? selection : null;
         window.rowSelectedId = selection.length ? selection[0].id : null; 
-        window.rowSelectedStatus = selection.length ? selection[0].status : null; 
+        window.rowSelectedStatus = selection.length ? selection[0].status : null; 
         
         if (window.rowSelectedStatus == 'idle') {
           $('#btnStartStopIcon').removeClass('fa-stop-circle');
