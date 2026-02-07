@@ -68,6 +68,7 @@ ipcMain.on('openTaskDetails', (event, taskId, startDate, stopDate) => {
       show: false,
       height: 400,
       width: 640,
+      resizable: false,
       webPreferences: {
           enableRemoteModule: true,
           nodeIntegration: true,
