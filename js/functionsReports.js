@@ -2,7 +2,8 @@ const {ipcRenderer} = require('electron');
 const remote = require('@electron/remote');
 const { dialog } = remote;
 const $ = require('jquery');
-const DATE_FORMAT = require('dateformat');
+const dateformat = require('dateformat');
+const dateFormatter = dateformat.default || dateformat;
 var lastStartDate, lastStopDate;
 
 $(function() {
@@ -11,10 +12,10 @@ $(function() {
 
 window.addEventListener('DOMContentLoaded', () => {
     //set default dates
-    lastStartDate = DATE_FORMAT(new Date(), 'yyyy-mm-dd');
+    lastStartDate = dateFormatter(new Date(), 'yyyy-mm-dd');
     lastStopDate = new Date();
     lastStopDate.setDate(lastStopDate.getDate() + 1);
-    lastStopDate = DATE_FORMAT(lastStopDate, 'yyyy-mm-dd');
+    lastStopDate = dateFormatter(lastStopDate, 'yyyy-mm-dd');
 
     initializeTable();
 })
@@ -72,17 +73,17 @@ function searchPreset() {
 
     switch (preset) {
         case 'today':
-            startDate = DATE_FORMAT(new Date(), 'yyyy-mm-dd');
+            startDate = dateFormatter(new Date(), 'yyyy-mm-dd');
             stopDate = new Date();
             stopDate.setDate(stopDate.getDate() + 1);
-            stopDate = DATE_FORMAT(stopDate, 'yyyy-mm-dd');
+            stopDate = dateFormatter(stopDate, 'yyyy-mm-dd');
             break;
 
         case 'yesterday':
-            stopDate = DATE_FORMAT(new Date(), 'yyyy-mm-dd');
+            stopDate = dateFormatter(new Date(), 'yyyy-mm-dd');
             startDate = new Date();
             startDate.setDate(startDate.getDate() - 1);
-            startDate = DATE_FORMAT(startDate, 'yyyy-mm-dd');
+            startDate = dateFormatter(startDate, 'yyyy-mm-dd');
             break;
 
         case 'thisWeek':
@@ -90,10 +91,10 @@ function searchPreset() {
             var dayOfWeek = today.getDay();
             var monday = new Date(today);
             monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
-            startDate = DATE_FORMAT(monday, 'yyyy-mm-dd');
+            startDate = dateFormatter(monday, 'yyyy-mm-dd');
             var nextMonday = new Date(monday);
             nextMonday.setDate(monday.getDate() + 7);
-            stopDate = DATE_FORMAT(nextMonday, 'yyyy-mm-dd');
+            stopDate = dateFormatter(nextMonday, 'yyyy-mm-dd');
             break;
 
         case 'lastWeek':
@@ -103,24 +104,24 @@ function searchPreset() {
             thisMonday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
             var lastMonday = new Date(thisMonday);
             lastMonday.setDate(thisMonday.getDate() - 7);
-            startDate = DATE_FORMAT(lastMonday, 'yyyy-mm-dd');
-            stopDate = DATE_FORMAT(thisMonday, 'yyyy-mm-dd');
+            startDate = dateFormatter(lastMonday, 'yyyy-mm-dd');
+            stopDate = dateFormatter(thisMonday, 'yyyy-mm-dd');
             break;
 
         case 'thisMonth':
             var today = new Date();
             var firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-            startDate = DATE_FORMAT(firstDay, 'yyyy-mm-dd');
+            startDate = dateFormatter(firstDay, 'yyyy-mm-dd');
             var nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-            stopDate = DATE_FORMAT(nextMonth, 'yyyy-mm-dd');
+            stopDate = dateFormatter(nextMonth, 'yyyy-mm-dd');
             break;
 
         case 'lastMonth':
             var today = new Date();
             var firstDayLastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-            startDate = DATE_FORMAT(firstDayLastMonth, 'yyyy-mm-dd');
+            startDate = dateFormatter(firstDayLastMonth, 'yyyy-mm-dd');
             var firstDayThisMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-            stopDate = DATE_FORMAT(firstDayThisMonth, 'yyyy-mm-dd');
+            stopDate = dateFormatter(firstDayThisMonth, 'yyyy-mm-dd');
             break;
 
         default:
@@ -145,7 +146,7 @@ function searchByDates() {
         return;
     }
 
-    updateGrid(DATE_FORMAT(startDate, 'yyyy-mm-dd'), DATE_FORMAT(stopDate, 'yyyy-mm-dd'));
+    updateGrid(dateFormatter(startDate, 'yyyy-mm-dd'), dateFormatter(stopDate, 'yyyy-mm-dd'));
 }
 
 /**
