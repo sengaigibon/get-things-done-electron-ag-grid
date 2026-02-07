@@ -7,7 +7,7 @@ function createWindow () {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 800,
     webPreferences: {
       preload: path.join(__dirname, '/js/', 'preload.js'),
       nodeIntegration: true,
@@ -17,7 +17,7 @@ function createWindow () {
     remoteMain.enable(mainWindow.webContents);
 
   mainWindow.loadFile('./pages/index.html')
-  mainWindow.webContents.openDevTools({mode: 'detach'});
+  // mainWindow.webContents.openDevTools({mode: 'detach'});
   mainWindow.focus();
 } 
 
@@ -56,7 +56,7 @@ ipcMain.on('openReportsWindow', (event) => {
   remoteMain.enable(reportsWindow.webContents);
 
   reportsWindow.loadFile('./pages/reports.html');
-  // reportsWindow.webContents.openDevTools({mode: 'detach'});
+  reportsWindow.webContents.openDevTools({mode: 'detach'});
   reportsWindow.once('ready-to-show', () => {
     reportsWindow.show(); 
   });

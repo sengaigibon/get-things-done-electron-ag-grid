@@ -13,11 +13,11 @@ function initializeTable()
     }
 
     var columnDefs = [
-      {headerName: "Id", field: "id", width: 60, sortable: true, resizable: false},
+      {headerName: "Id", field: "id", width: 65, sortable: true, resizable: false},
       {headerName: "Tag", field: "tag", width: 80, resizable: false},
-      {headerName: "Title", field: "title", width: 340, resizable: false},
+      {headerName: "Title", field: "title", width: 330, resizable: false},
       {headerName: "Start date", field: "startDate", width: 165, resizable: false},
-      {headerName: "Status", field: "status", width: 70, sortable: true, resizable: false},
+      {headerName: "Status", field: "status", width: 75, sortable: true, resizable: false},
     ];
 
     var data = [];
@@ -30,7 +30,7 @@ function initializeTable()
       columnDefs: columnDefs,
       rowData: data,
       rowHeight: 30,
-      rowSelection: 'multiple',
+      headerHeight: 30,
 
       onGridReady: function(event) { console.log('Grid ready, data loaded.'); },
       onRowSelected: function (event) {
