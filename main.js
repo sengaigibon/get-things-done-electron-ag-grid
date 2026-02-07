@@ -17,7 +17,7 @@ function createWindow () {
     remoteMain.enable(mainWindow.webContents);
 
   mainWindow.loadFile('./pages/index.html')
-  mainWindow.webContents.openDevTools({mode: 'bottom'});
+  // mainWindow.webContents.openDevTools({mode: 'detach'});
   mainWindow.focus();
 } 
 
@@ -56,7 +56,7 @@ ipcMain.on('openReportsWindow', (event) => {
   remoteMain.enable(reportsWindow.webContents);
 
   reportsWindow.loadFile('./pages/reports.html');
-  reportsWindow.webContents.openDevTools({mode: 'detach'});
+  // reportsWindow.webContents.openDevTools({mode: 'detach'});
   reportsWindow.once('ready-to-show', () => {
     reportsWindow.show(); 
   });
