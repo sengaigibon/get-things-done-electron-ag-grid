@@ -5,6 +5,7 @@ const $ = require('jquery');
 const dateformat = require('dateformat');
 const dateFormatter = dateformat.default || dateformat;
 var lastStartDate, lastStopDate;
+var gridApi;
 
 $(function() {
     setLocalEvents();
@@ -29,10 +30,10 @@ function initializeTable() {
         }
 
         var columnDefs = [
-            {headerName: "Id", field: "id", checkboxSelection: true, width: 75, sortable: true, resizable: false},
+            {headerName: "Id", field: "id", width: 75, sortable: true, resizable: false},
             {headerName: "Task", field: "title", width: 390, resizable: false},
             {headerName: "Total time", field: "total", width: 150, resizable: false},
-            {headerName: "Status", field: "status", width: 150, resizable: false},
+            {headerName: "Status", field: "status", width: 75, resizable: false},
         ];
 
         var data = setGridData(rows);
@@ -42,16 +43,14 @@ function initializeTable() {
             columnDefs: columnDefs,
             rowData: data,
             rowHeight: 30,
-            defaultColDef: {
-                resizable: false
-            },
+            headerHeight: 30,
             onRowDoubleClicked: function(event) {
                 ipcRenderer.send('openTaskDetails', event.data.id, lastStartDate, lastStopDate);
             }
         };
 
         var gridDiv = document.querySelector('#gridTasks');
-        agGrid.createGrid(gridDiv, gridOptions);
+        gridApi = agGrid.createGrid(gridDiv, gridOptions);
     });
 }
 
@@ -162,7 +161,7 @@ function updateGrid(startDate, stopDate) {
             throw err;
         }
         var data = setGridData(rows);
-        gridOptions.api.setGridOption('rowData', data);
+        gridApi.setGridOption('rowData', data);
     })
 }
 
