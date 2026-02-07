@@ -1,6 +1,6 @@
 {
   "name": "getthingsdone",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Portable version of the linux app Get Things GNOME!, by jknight",
   "main": "main.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "time"
   ],
   "author": "Javier Caballero (jknight)",
-  "license": "ISC",
+  "license": "PolyForm-Noncommercial-1.0.0",
   "bugs": {
     "url": "https://github.com/sengaigibon/get-things-done-electron-ag-grid.git/issues"
   },
