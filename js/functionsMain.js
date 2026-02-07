@@ -2,6 +2,7 @@ const {ipcRenderer} = require('electron');
 const remote = require('@electron/remote');
 const { dialog } = remote;
 const $ = require('jquery');
+var gridApi;
 
 // $(document).ready(function() {
 //     debugger;
@@ -12,7 +13,7 @@ window.addEventListener('DOMContentLoaded', () => {
     setTimeout(function(){ 
         setToolBoxEvents();
         var gridDiv = document.querySelector('#gridTasks');
-        agGrid.createGrid(gridDiv, window.gridOptions);
+        gridApi = agGrid.createGrid(gridDiv, window.gridOptions);
     }, 1000); 
 })
 
@@ -48,7 +49,7 @@ function updateGrid(schema) {
             data.push({id: row.taskId, tag: row.tag, title:row.title, startDate:row.startDate, status:row.status})
         });
 
-        gridOptions.api.setGridOption('rowData', data);
+        gridApi.setGridOption('rowData', data);
 
         window.rowSelectedId = null;
         window.rowSelectedStatus = null;

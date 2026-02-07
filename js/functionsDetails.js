@@ -1,4 +1,5 @@
 const ipc = require('electron').ipcRenderer;
+var gridApi;
 
 ipc.on('initializeTable', (event, taskId, startDate, stopDate) => {
     initializeTable(taskId, startDate, stopDate);
@@ -48,7 +49,7 @@ function initializeTable(taskId, startDate, stopDate) {
         };
 
         var gridDiv = document.querySelector('#gridTasks');
-        agGrid.createGrid(gridDiv, gridOptions);
+        gridApi = agGrid.createGrid(gridDiv, gridOptions);
     });
 }
 
@@ -85,6 +86,6 @@ function updateGrid(taskId, startDate, stopDate) {
             throw err;
         }
         var data = setGridData(rows);
-        gridOptions.api.setGridOption('rowData', data);
+        gridApi.setGridOption('rowData', data);
     });
 }
