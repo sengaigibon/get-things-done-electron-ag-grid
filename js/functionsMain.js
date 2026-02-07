@@ -17,19 +17,19 @@ window.addEventListener('DOMContentLoaded', () => {
 })
 
 function setToolBoxEvents() {
-    $('#btnNewTask').click(function(e) {
+    $('#btnNewTask').on('click', function(e) {
         createTask();
     });
 
-    $('#btnTaskDone').click(function(e) {
+    $('#btnTaskDone').on('click', function(e) {
         completeTask();
     });
 
-    $('#btnStartStop').click(function(e) {
+    $('#btnStartStop').on('click', function(e) {
         startStopTask();
     });
 
-    $('#btnReports').click(function(e) {
+    $('#btnReports').on('click', function(e) {
         createReportsWindow();
     });
 }

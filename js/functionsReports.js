@@ -54,11 +54,11 @@ function initializeTable() {
 }
 
 function setLocalEvents() {
-    $('#btnSearchPreset').click(function(e) {
+    $('#btnSearchPreset').on('click', function(e) {
         searchPreset()
     });
 
-    $('#btnSearchCustom').click(function(e) {
+    $('#btnSearchCustom').on('click', function(e) {
         searchByDates()
     });
 
