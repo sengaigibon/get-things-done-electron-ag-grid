@@ -34,6 +34,7 @@ body {
 .filters .preselected {
   display: flex;
   align-items: center;
+  gap: 8px;
 }
 
 .filters .dates, .date-start,.date-end,.date-action {
