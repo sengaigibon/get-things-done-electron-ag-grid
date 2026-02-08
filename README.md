@@ -26,6 +26,33 @@ Full details can be found in the [LICENSE.md](./LICENSE.md) file.
 - **Database**: SQLite for storing task and tracking data.
 - **Framework**: Electron for building the desktop application.
 
+## Getting Started
+
+### Prerequisites
+- Node.js (v14 or higher)
+- npm (comes with Node.js)
+
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/sengaigibon/get-things-done-electron-ag-grid.git
+   cd get-things-done-electron-ag-grid
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+### Running the Application
+Start the application with:
+```bash
+npm start
+```
+
+This will launch the Electron application and open the main window.
+
 ## Future Enhancements
 - Export reports as CSV or PDF files.
-- Add notifications for task reminders or tracking status changes.
+- Track status changes (?).
+- Tasks recycle bin.
