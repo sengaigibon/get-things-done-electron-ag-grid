@@ -11,15 +11,10 @@ const pad = (part) => part.toString().padStart(2, '0');
  * @param {Date} date 
  */
 function formatDateTime(date) {
-    let date = date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
-    let time = pad(date.getHours()) + ':' + pad(date.getMinutes()) + ':' + pad(date.getSeconds());
-    return date + ' ' + time;
+    let datePart = date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
+    let timePart = pad(date.getHours()) + ':' + pad(date.getMinutes()) + ':' + pad(date.getSeconds());
+    return datePart + ' ' + timePart;
 }
-
-// $(document).ready(function() {
-//     debugger;
-
-// });
 
 window.addEventListener('DOMContentLoaded', () => {
     setTimeout(function(){ 
