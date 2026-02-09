@@ -4,10 +4,17 @@ const { dialog } = remote;
 const $ = require('jquery');
 var gridApi;
 
-// $(document).ready(function() {
-//     debugger;
+const pad = (part) => part.toString().padStart(2, '0');
 
-// });
+/**
+ * Format date to YYYY-MM-DD HH:MM:SS
+ * @param {Date} date 
+ */
+function formatDateTime(date) {
+    let datePart = date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
+    let timePart = pad(date.getHours()) + ':' + pad(date.getMinutes()) + ':' + pad(date.getSeconds());
+    return datePart + ' ' + timePart;
+}
 
 window.addEventListener('DOMContentLoaded', () => {
     setTimeout(function(){ 
@@ -75,7 +82,8 @@ function createTask() {
     }
 
     var schema = require('../js/schema');
-    schema.insertNew(taskTag, taskName, function(err) {
+    var startDate = formatDateTime(new Date());
+    schema.insertNew(taskTag, taskName, startDate, function(err) {
         if (err) {
             console.log(err.message);
             return false;
@@ -127,7 +135,8 @@ function startStopTask() {
 
     switch (window.rowSelectedStatus) {
         case 'idle':
-            schema.startTracking(window.rowSelectedId, function(err) {
+            var startTime = formatDateTime(new Date());
+            schema.startTracking(window.rowSelectedId, startTime, function(err) {
                 if (err) {
                     console.log(err.message);
                     return false;
@@ -148,7 +157,8 @@ function startStopTask() {
             break;
 
         case 'active':
-            schema.stopTracking(window.rowSelectedId, function(err) {
+            var stopTime = formatDateTime(new Date());
+            schema.stopTracking(window.rowSelectedId, stopTime, function(err) {
                 if (err) {
                     console.log(err.message);
                     return false;
