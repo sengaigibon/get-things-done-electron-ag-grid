@@ -4,18 +4,6 @@ const { dialog } = remote;
 const $ = require('jquery');
 var gridApi;
 
-const pad = (part) => part.toString().padStart(2, '0');
-
-/**
- * Format date to YYYY-MM-DD HH:MM:SS
- * @param {Date} date 
- */
-function formatDateTime(date) {
-    let datePart = date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
-    let timePart = pad(date.getHours()) + ':' + pad(date.getMinutes()) + ':' + pad(date.getSeconds());
-    return datePart + ' ' + timePart;
-}
-
 window.addEventListener('DOMContentLoaded', () => {
     setTimeout(function(){ 
         setToolBoxEvents();
