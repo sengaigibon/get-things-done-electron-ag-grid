@@ -9,8 +9,18 @@ window.addEventListener('DOMContentLoaded', () => {
         setToolBoxEvents();
         var gridDiv = document.querySelector('#gridTasks');
         gridApi = agGrid.createGrid(gridDiv, window.gridOptions);
-    }, 1000); 
+    }, 200); 
+
+
+    $('#inputName').on('keydown', function(e) {
+        if(e.ctrlKey && e.key === 'Enter') {
+            e.preventDefault();
+            createTask();
+        }
+    })
 })
+
+
 
 function setToolBoxEvents() {
     $('#btnNewTask').on('click', function(e) {
