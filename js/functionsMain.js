@@ -4,25 +4,23 @@ const { dialog } = remote;
 const $ = require('jquery');
 var gridApi;
 
-const pad = (part) => part.toString().padStart(2, '0');
-
-/**
- * Format date to YYYY-MM-DD HH:MM:SS
- * @param {Date} date 
- */
-function formatDateTime(date) {
-    let datePart = date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
-    let timePart = pad(date.getHours()) + ':' + pad(date.getMinutes()) + ':' + pad(date.getSeconds());
-    return datePart + ' ' + timePart;
-}
-
 window.addEventListener('DOMContentLoaded', () => {
     setTimeout(function(){ 
         setToolBoxEvents();
         var gridDiv = document.querySelector('#gridTasks');
         gridApi = agGrid.createGrid(gridDiv, window.gridOptions);
-    }, 1000); 
+    }, 200); 
+
+
+    $('#inputName').on('keydown', function(e) {
+        if(e.ctrlKey && e.key === 'Enter') {
+            e.preventDefault();
+            createTask();
+        }
+    })
 })
+
+
 
 function setToolBoxEvents() {
     $('#btnNewTask').on('click', function(e) {

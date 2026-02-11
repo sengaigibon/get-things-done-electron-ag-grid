@@ -39,10 +39,6 @@ const VIEW_SUMMARY_TWO = "CREATE VIEW summary2 as select t.title as title, sum(t
 
 /**** General queries */
 const SELECT_ALL_INCOMPLETE = "SELECT * from tasks WHERE status != 'completed' ORDER BY taskId DESC";
-const SELECT_TODAYS_TASKS = "SELECT t.taskId as id, t.title as title, t.status as status, sum(tt.total) as total " + 
-                            "FROM tasks t JOIN taskTracker tt ON tt.taskId = t.taskId " + 
-                            "WHERE tt.start > date() " + 
-                            "GROUP BY t.taskId";
 
 const SELECT_TASKS_CUSTOM = "SELECT t.taskId as id, t.title as title, t.status as status, sum(tt.total) as total " + 
                             "FROM tasks t JOIN taskTracker tt ON tt.taskId = t.taskId " + 

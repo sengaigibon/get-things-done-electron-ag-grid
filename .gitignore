@@ -5,3 +5,4 @@
 .vscode/launch.json
 db/get_things_done.sqlite
 /coverage
+todo.txt

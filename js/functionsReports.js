@@ -5,16 +5,6 @@ const $ = require('jquery');
 var lastStartDate, lastStopDate;
 var gridApi;
 
-const pad = (n) => n.toString().padStart(2, '0');
-
-/**
- * Format date to YYYY-MM-DD
- * @param {Date} date 
- */
-function formatDate(date) {
-    return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
-}
-
 $(function() {
     setLocalEvents();
 });

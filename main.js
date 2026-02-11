@@ -68,7 +68,7 @@ ipcMain.on('openTaskDetails', (event, taskId, startDate, stopDate) => {
   const detailsWindow = new BrowserWindow({
       show: false,
       height: 425,
-      width: 760,
+      width: 820,
       resizable: false,
       webPreferences: {
           enableRemoteModule: true,
