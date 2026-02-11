@@ -2,19 +2,25 @@ const {ipcRenderer} = require('electron');
 const remote = require('@electron/remote');
 const { dialog } = remote;
 const $ = require('jquery');
-
-// $(document).ready(function() {
-//     debugger;
-
-// });
+var gridApi;
 
 window.addEventListener('DOMContentLoaded', () => {
     setTimeout(function(){ 
         setToolBoxEvents();
         var gridDiv = document.querySelector('#gridTasks');
-        new agGrid.Grid(gridDiv, window.gridOptions);
-    }, 1000); 
+        gridApi = agGrid.createGrid(gridDiv, window.gridOptions);
+    }, 200); 
+
+
+    $('#inputName').on('keydown', function(e) {
+        if(e.ctrlKey && e.key === 'Enter') {
+            e.preventDefault();
+            createTask();
+        }
+    })
 })
+
+
 
 function setToolBoxEvents() {
     $('#btnNewTask').on('click', function(e) {
@@ -48,7 +54,7 @@ function updateGrid(schema) {
             data.push({id: row.taskId, tag: row.tag, title:row.title, startDate:row.startDate, status:row.status})
         });
 
-        gridOptions.api.setRowData(data);
+        gridApi.setGridOption('rowData', data);
 
         window.rowSelectedId = null;
         window.rowSelectedStatus = null;
@@ -74,7 +80,8 @@ function createTask() {
     }
 
     var schema = require('../js/schema');
-    schema.insertNew(taskTag, taskName, function(err) {
+    var startDate = formatDateTime(new Date());
+    schema.insertNew(taskTag, taskName, startDate, function(err) {
         if (err) {
             console.log(err.message);
             return false;
@@ -126,7 +133,8 @@ function startStopTask() {
 
     switch (window.rowSelectedStatus) {
         case 'idle':
-            schema.startTracking(window.rowSelectedId, function(err) {
+            var startTime = formatDateTime(new Date());
+            schema.startTracking(window.rowSelectedId, startTime, function(err) {
                 if (err) {
                     console.log(err.message);
                     return false;
@@ -147,7 +155,8 @@ function startStopTask() {
             break;
 
         case 'active':
-            schema.stopTracking(window.rowSelectedId, function(err) {
+            var stopTime = formatDateTime(new Date());
+            schema.stopTracking(window.rowSelectedId, stopTime, function(err) {
                 if (err) {
                     console.log(err.message);
                     return false;

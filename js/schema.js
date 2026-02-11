@@ -1,5 +1,4 @@
 const _SQLITE3 = require('sqlite3').verbose();
-const DATE_FORMAT = require('dateformat');
 
 const DB_DIR = 'db'
 const DB_NAME = 'get_things_done.sqlite'
@@ -40,10 +39,6 @@ const VIEW_SUMMARY_TWO = "CREATE VIEW summary2 as select t.title as title, sum(t
 
 /**** General queries */
 const SELECT_ALL_INCOMPLETE = "SELECT * from tasks WHERE status != 'completed' ORDER BY taskId DESC";
-const SELECT_TODAYS_TASKS = "SELECT t.taskId as id, t.title as title, t.status as status, sum(tt.total) as total " + 
-                            "FROM tasks t JOIN taskTracker tt ON tt.taskId = t.taskId " + 
-                            "WHERE tt.start > date() " + 
-                            "GROUP BY t.taskId";
 
 const SELECT_TASKS_CUSTOM = "SELECT t.taskId as id, t.title as title, t.status as status, sum(tt.total) as total " + 
                             "FROM tasks t JOIN taskTracker tt ON tt.taskId = t.taskId " + 
@@ -76,15 +71,6 @@ function createDB ()
     console.log("DB schema creation OK");
 
     db.close();
-}
-
-/**
- * 
- * @param {*} initial 
- */
-function getDateFormatted(initial = null, format = "yyyy-mm-dd HH:MM:ss")
-{
-    return DATE_FORMAT(initial ? initial : new Date(), format);
 }
 
 /**
@@ -142,8 +128,8 @@ exports.getAllRows = function(callback) {
     db.all(SELECT_ALL_INCOMPLETE, [], callback);
 };
 
-exports.insertNew = function (taskTag, taskName, callback) {
-    let sql = "INSERT INTO tasks(taskId, tag, title, startDate) VALUES (null, '" + taskTag + "', '" + taskName + "', '" + getDateFormatted() + "')";
+exports.insertNew = function (taskTag, taskName, startDate, callback) {
+    let sql = "INSERT INTO tasks(taskId, tag, title, startDate) VALUES (null, '" + taskTag + "', '" + taskName + "', '" + startDate + "')";
 
     run(sql, this, callback);
 };
@@ -154,13 +140,13 @@ exports.updateStatus = function (taskId, status, callback) {
     run(sql, this, callback);
 };
 
-exports.startTracking = function (taskId, callback) {
-    let sql = "INSERT INTO taskTracker(trackId, taskId, start) VALUES(null, " + taskId + ", '" + getDateFormatted() + "')";
+exports.startTracking = function (taskId, startTime, callback) {
+    let sql = "INSERT INTO taskTracker(trackId, taskId, start) VALUES(null, " + taskId + ", '" + startTime + "')";
 
     run(sql, this, callback);
 };
 
-exports.stopTracking = function (taskId, callback) { 
+exports.stopTracking = function (taskId, stopTime, callback) { 
     let sql = "SELECT trackid, start FROM taskTracker WHERE taskId = '" + taskId + "' order by trackId desc limit 1";
 
     let db = this.getDB();
@@ -171,10 +157,10 @@ exports.stopTracking = function (taskId, callback) {
         }
 
         var start = new Date(row.start);
-        var stop = new Date();
+        var stop = new Date(stopTime);
         var total = Math.floor((stop.getTime() - start.getTime()) / 1000); //difference in secods
 
-        let sql = "UPDATE taskTracker SET stop = '" + getDateFormatted(stop) +"', total = " + total + " WHERE trackId = '" + row.trackId + "'";
+        let sql = "UPDATE taskTracker SET stop = '" + stopTime +"', total = " + total + " WHERE trackId = '" + row.trackId + "'";
 
         db.run(sql, [], callback);
     });

@@ -4,24 +4,20 @@
         <title>Reports</title>
 
         <link rel="stylesheet" href="../styles/stylesReports.css"> 
-        <link rel="stylesheet" href="../styles/ag-grid.css">
-        <link rel="stylesheet" href="../styles/ag-theme-balham.css">
         <script src="../lib/ag-grid-community.min.js"></script>
     </head>
     <body>
         <div class="filters">
             <div class="preselected">
-                <div class="margin-20px">
-                    <select name="presets" id="presets">
-                        <option value="today">Today</option>
-                        <option value="yesterday">Yesterday</option>
-                        <option value="thisWeek">This week</option>
-                        <option value="lastWeek">Last week</option>
-                        <option value="thisMonth">This month</option>
-                        <option value="lastMonth">Last month</option>
-                    </select>
-                    <button id="btnSearchPreset">Search</button>
-                </div>
+                <select name="presets" id="presets">
+                    <option value="today">Today</option>
+                    <option value="yesterday">Yesterday</option>
+                    <option value="thisWeek">This week</option>
+                    <option value="lastWeek">Last week</option>
+                    <option value="thisMonth">This month</option>
+                    <option value="lastMonth">Last month</option>
+                </select>
+                <button id="btnSearchPreset">Search</button>
             </div>
             <div class="dates">
                 <div class="date-start">
@@ -38,7 +34,7 @@
             </div>
         </div>
         <div class="list">
-            <div id="gridTasks" class="ag-theme-balham tasksTable margin-10px"></div>
+            <div id="gridTasks" class="tasksTable margin-10px"></div>
             <div class="totals">
                 <div class="texts">
                     <span>Total hours:</span>
@@ -48,6 +44,7 @@
                 </div>
             </div>
         </div>
+        <script src="../js/common.js"></script>
         <script src="../js/functionsReports.js"></script>
     </body>
 </html>

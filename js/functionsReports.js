@@ -2,8 +2,8 @@ const {ipcRenderer} = require('electron');
 const remote = require('@electron/remote');
 const { dialog } = remote;
 const $ = require('jquery');
-const DATE_FORMAT = require('dateformat');
 var lastStartDate, lastStopDate;
+var gridApi;
 
 $(function() {
     setLocalEvents();
@@ -11,10 +11,10 @@ $(function() {
 
 window.addEventListener('DOMContentLoaded', () => {
     //set default dates
-    lastStartDate = DATE_FORMAT(new Date(), 'yyyy-mm-dd');
+    lastStartDate = formatDate(new Date());
     lastStopDate = new Date();
     lastStopDate.setDate(lastStopDate.getDate() + 1);
-    lastStopDate = DATE_FORMAT(lastStopDate, 'yyyy-mm-dd');
+    lastStopDate = formatDate(lastStopDate);
 
     initializeTable();
 })
@@ -28,26 +28,27 @@ function initializeTable() {
         }
 
         var columnDefs = [
-            {headerName: "Id", field: "id", checkboxSelection: true, width: 75, sortable: true},
-            {headerName: "Task", field: "title", width: 390, resizable: true},
-            {headerName: "Total time", field: "total", width: 150},
-            {headerName: "Status", field: "status", width: 150},
+            {headerName: "Id", field: "id", width: 75, sortable: true, resizable: false},
+            {headerName: "Task", field: "title", width: 390, resizable: false},
+            {headerName: "Total time", field: "total", width: 150, resizable: false},
+            {headerName: "Status", field: "status", width: 75, resizable: false},
         ];
 
         var data = setGridData(rows);
 
         gridOptions = {
+            theme: agGrid.themeQuartz,
             columnDefs: columnDefs,
             rowData: data,
             rowHeight: 30,
-
+            headerHeight: 30,
             onRowDoubleClicked: function(event) {
                 ipcRenderer.send('openTaskDetails', event.data.id, lastStartDate, lastStopDate);
             }
         };
 
         var gridDiv = document.querySelector('#gridTasks');
-        new agGrid.Grid(gridDiv, gridOptions);
+        gridApi = agGrid.createGrid(gridDiv, gridOptions);
     });
 }
 
@@ -69,17 +70,17 @@ function searchPreset() {
 
     switch (preset) {
         case 'today':
-            startDate = DATE_FORMAT(new Date(), 'yyyy-mm-dd');
+            startDate = formatDate(new Date());
             stopDate = new Date();
             stopDate.setDate(stopDate.getDate() + 1);
-            stopDate = DATE_FORMAT(stopDate, 'yyyy-mm-dd');
+            stopDate = formatDate(stopDate);
             break;
 
         case 'yesterday':
-            stopDate = DATE_FORMAT(new Date(), 'yyyy-mm-dd');
+            stopDate = formatDate(new Date());
             startDate = new Date();
             startDate.setDate(startDate.getDate() - 1);
-            startDate = DATE_FORMAT(startDate, 'yyyy-mm-dd');
+            startDate = formatDate(startDate);
             break;
 
         case 'thisWeek':
@@ -87,10 +88,10 @@ function searchPreset() {
             var dayOfWeek = today.getDay();
             var monday = new Date(today);
             monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
-            startDate = DATE_FORMAT(monday, 'yyyy-mm-dd');
+            startDate = formatDate(monday);
             var nextMonday = new Date(monday);
             nextMonday.setDate(monday.getDate() + 7);
-            stopDate = DATE_FORMAT(nextMonday, 'yyyy-mm-dd');
+            stopDate = formatDate(nextMonday);
             break;
 
         case 'lastWeek':
@@ -100,24 +101,24 @@ function searchPreset() {
             thisMonday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
             var lastMonday = new Date(thisMonday);
             lastMonday.setDate(thisMonday.getDate() - 7);
-            startDate = DATE_FORMAT(lastMonday, 'yyyy-mm-dd');
-            stopDate = DATE_FORMAT(thisMonday, 'yyyy-mm-dd');
+            startDate = formatDate(lastMonday);
+            stopDate = formatDate(thisMonday);
             break;
 
         case 'thisMonth':
             var today = new Date();
             var firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-            startDate = DATE_FORMAT(firstDay, 'yyyy-mm-dd');
+            startDate = formatDate(firstDay);
             var nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-            stopDate = DATE_FORMAT(nextMonth, 'yyyy-mm-dd');
+            stopDate = formatDate(nextMonth);
             break;
 
         case 'lastMonth':
             var today = new Date();
             var firstDayLastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-            startDate = DATE_FORMAT(firstDayLastMonth, 'yyyy-mm-dd');
+            startDate = formatDate(firstDayLastMonth);
             var firstDayThisMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-            stopDate = DATE_FORMAT(firstDayThisMonth, 'yyyy-mm-dd');
+            stopDate = formatDate(firstDayThisMonth);
             break;
 
         default:
@@ -142,7 +143,7 @@ function searchByDates() {
         return;
     }
 
-    updateGrid(DATE_FORMAT(startDate, 'yyyy-mm-dd'), DATE_FORMAT(stopDate, 'yyyy-mm-dd'));
+    updateGrid(formatDate(startDate), formatDate(stopDate));
 }
 
 /**
@@ -158,7 +159,7 @@ function updateGrid(startDate, stopDate) {
             throw err;
         }
         var data = setGridData(rows);
-        gridOptions.api.setRowData(data);
+        gridApi.setGridOption('rowData', data);
     })
 }
 

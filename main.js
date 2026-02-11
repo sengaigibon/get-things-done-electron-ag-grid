@@ -6,8 +6,9 @@ remoteMain.initialize()
 function createWindow () {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 850,
+    height: 800,
+    resizable: false,
     webPreferences: {
       preload: path.join(__dirname, '/js/', 'preload.js'),
       nodeIntegration: true,
@@ -44,7 +45,7 @@ ipcMain.on('openReportsWindow', (event) => {
 
   const reportsWindow = new BrowserWindow({
       show: false,
-      height: 610,
+      height: 665,
       width: 800,
       resizable: false,
       webPreferences: {
@@ -66,8 +67,8 @@ ipcMain.on('openTaskDetails', (event, taskId, startDate, stopDate) => {
 
   const detailsWindow = new BrowserWindow({
       show: false,
-      height: 400,
-      width: 640,
+      height: 425,
+      width: 820,
       resizable: false,
       webPreferences: {
           enableRemoteModule: true,

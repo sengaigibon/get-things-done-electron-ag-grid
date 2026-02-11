@@ -13,11 +13,11 @@ function initializeTable()
     }
 
     var columnDefs = [
-      {headerName: "Id", field: "id", checkboxSelection: true, width: 75, sortable: true},
-      {headerName: "Tag", field: "tag", width: 80, resizable: true},
-      {headerName: "Title", field: "title", width: 390, resizable: true},
-      {headerName: "Start date", field: "startDate", width: 150},
-      {headerName: "Status", field: "status", width: 70, sortable: true},
+      {headerName: "Id", field: "id", width: 65, sortable: true, resizable: false},
+      {headerName: "Tag", field: "tag", width: 80, resizable: false},
+      {headerName: "Title", field: "title", width: 330, resizable: false},
+      {headerName: "Start date", field: "startDate", width: 165, resizable: false},
+      {headerName: "Status", field: "status", width: 75, sortable: true, resizable: false},
     ];
 
     var data = [];
@@ -26,17 +26,23 @@ function initializeTable()
     });
     
     window.gridOptions = {
+      theme: agGrid.themeQuartz,
       columnDefs: columnDefs,
       rowData: data,
       rowHeight: 30,
-      rowSelection: 'multiple',
+      headerHeight: 30,
+      rowSelection: { 
+        mode: 'multiRow',
+        checkboxes: true,
+        enableClickSelection: true
+      },
 
       onGridReady: function(event) { console.log('Grid ready, data loaded.'); },
-      onRowSelected: function (event) {
-        var selection = window.gridOptions.api.getSelectedRows();
+      onSelectionChanged: function (event) {
+        var selection = event.api.getSelectedRows();
         window.selectedRows = selection.length ? selection : null;
         window.rowSelectedId = selection.length ? selection[0].id : null; 
-        window.rowSelectedStatus = selection.length ? selection[0].status : null; 
+        window.rowSelectedStatus = selection.length ? selection[0].status : null; 
         
         if (window.rowSelectedStatus == 'idle') {
           $('#btnStartStopIcon').removeClass('fa-stop-circle');
