@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/sengaigibon/get-things-done-electron-ag-grid.git#readme",
   "devDependencies": {
-    "electron": "^40.2.1",
+    "electron": "^40.8.5",
     "electron-builder": "^26.7.0",
     "jest": "^29.7.0"
   },
